@@ -1,30 +1,122 @@
-import "dotenv/config";
-import express from "express";
-import { createExpressMiddleware } from "@trpc/server/adapters/express";
-import { registerOAuthRoutes } from "../server/_core/oauth";
-import { registerStripeRoutes } from "../server/stripe";
-import { appRouter } from "../server/routers";
-import { createContext } from "../server/_core/context";
+import type { VercelRequest, VercelResponse } from "@vercel/node";
+import Stripe from "stripe";
 
-const app = express();
+// Initialize Stripe
+function getStripe(): Stripe | null {
+  const secretKey = process.env.STRIPE_SECRET_KEY;
+  if (!secretKey) return null;
+  return new Stripe(secretKey, { apiVersion: "2025-01-27.acacia" });
+}
 
-// Configure body parser
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ limit: "50mb", extended: true }));
+function getPriceIds() {
+  return {
+    proMonthly: process.env.STRIPE_PRICE_PRO_MONTHLY || "",
+    proYearly: process.env.STRIPE_PRICE_PRO_YEARLY || "",
+    proLifetime: process.env.STRIPE_PRICE_PRO_LIFETIME || "",
+  };
+}
 
-// OAuth callback under /api/oauth/callback
-registerOAuthRoutes(app);
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // CORS headers
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-// Stripe payment routes
-registerStripeRoutes(app);
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
 
-// tRPC API
-app.use(
-  "/api/trpc",
-  createExpressMiddleware({
-    router: appRouter,
-    createContext,
-  })
-);
+  const path = (req.query.path as string) || req.url || "";
 
-export default app;
+  // POST /api/stripe/create-checkout-session
+  if (req.method === "POST" && path.includes("create-checkout-session")) {
+    const stripe = getStripe();
+    if (!stripe) {
+      return res.status(503).json({ error: "Payment processing not configured" });
+    }
+
+    const { plan, successUrl, cancelUrl } = req.body as {
+      plan: "proMonthly" | "proYearly" | "proLifetime" | "freeTrial";
+      successUrl?: string;
+      cancelUrl?: string;
+    };
+
+    if (plan === "freeTrial") {
+      return res.json({ url: process.env.APP_SIGNUP_URL || "https://yfitai.com/signup?trial=true" });
+    }
+
+    const priceIds = getPriceIds();
+    const priceId = priceIds[plan as keyof typeof priceIds];
+    if (!priceId) {
+      return res.status(400).json({ error: `No price configured for plan: ${plan}` });
+    }
+
+    try {
+      const isLifetime = plan === "proLifetime";
+      const origin = (req.headers.origin as string) || "https://yfit-marketing.vercel.app";
+
+      const sessionParams: Stripe.Checkout.SessionCreateParams = {
+        mode: isLifetime ? "payment" : "subscription",
+        line_items: [{ price: priceId, quantity: 1 }],
+        success_url: successUrl || `${origin}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: cancelUrl || `${origin}/#pricing`,
+        automatic_tax: { enabled: true },
+        allow_promotion_codes: true,
+        billing_address_collection: "auto",
+        metadata: { plan, source: "yfit-marketing-website" },
+      };
+
+      if (!isLifetime) {
+        sessionParams.subscription_data = {
+          trial_period_days: 0,
+          metadata: { plan },
+        };
+      }
+
+      const session = await stripe.checkout.sessions.create(sessionParams);
+      return res.json({ url: session.url });
+    } catch (error) {
+      console.error("[Stripe] Error creating checkout session:", error);
+      return res.status(500).json({ error: "Failed to create checkout session", details: String(error) });
+    }
+  }
+
+  // POST /api/stripe/webhook
+  if (req.method === "POST" && path.includes("webhook")) {
+    const stripe = getStripe();
+    if (!stripe) return res.status(503).send("Payment processing not configured");
+
+    const sig = req.headers["stripe-signature"] as string;
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+    if (!webhookSecret) {
+      console.warn("[Stripe] STRIPE_WEBHOOK_SECRET not set");
+      return res.json({ received: true });
+    }
+
+    try {
+      const rawBody = JSON.stringify(req.body);
+      const event = stripe.webhooks.constructEvent(rawBody, sig, webhookSecret);
+      console.log(`[Stripe] Webhook: ${event.type}`);
+      return res.json({ received: true });
+    } catch (err) {
+      return res.status(400).send(`Webhook Error: ${(err as Error).message}`);
+    }
+  }
+
+  // GET /api/stripe/plans
+  if (req.method === "GET" && path.includes("plans")) {
+    const stripe = getStripe();
+    const priceIds = getPriceIds();
+    return res.json({
+      configured: !!stripe,
+      plans: {
+        proMonthly: { priceId: priceIds.proMonthly, amount: 1299, currency: "usd" },
+        proYearly: { priceId: priceIds.proYearly, amount: 9999, currency: "usd" },
+        proLifetime: { priceId: priceIds.proLifetime, amount: 24999, currency: "usd" },
+      },
+    });
+  }
+
+  return res.status(404).json({ error: "Not found" });
+}
