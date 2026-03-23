@@ -10,7 +10,8 @@
       "use": "@vercel/static-build",
       "config": {
         "buildCommand": "vite build",
-        "outputDirectory": "dist/public"
+        "outputDirectory": "dist/public",
+        "installCommand": "pnpm install --no-frozen-lockfile"
       }
     }
   ],
