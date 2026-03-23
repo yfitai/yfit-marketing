@@ -68,7 +68,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       if (!isLifetime) {
         sessionParams.subscription_data = {
-          trial_period_days: 0,
           metadata: { plan },
         };
       }
