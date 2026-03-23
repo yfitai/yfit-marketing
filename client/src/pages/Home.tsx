@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, ArrowRight, Activity, Zap, Smartphone, BarChart3, Pill, Eye, Target, Dumbbell, TrendingUp, Apple, Calendar, Brain, Loader2 } from "lucide-react";
+import { Check, ArrowRight, Activity, Zap, Smartphone, BarChart3, Pill, Eye, Target, Dumbbell, TrendingUp, Apple, Calendar, Brain, Loader2, X, Mail } from "lucide-react";
 import { useLocation } from "wouter";
 import { useStripeCheckout } from "@/hooks/useStripeCheckout";
 
@@ -18,6 +19,21 @@ export default function Home() {
   const goToSignIn = () => navigate('/signin');
   const goToSignUp = () => navigate('/signup');
   const { startCheckout, isLoading: checkoutLoading } = useStripeCheckout();
+  const [showWaitlist, setShowWaitlist] = useState(false);
+  const [waitlistEmail, setWaitlistEmail] = useState("");
+  const [waitlistName, setWaitlistName] = useState("");
+  const [waitlistSubmitted, setWaitlistSubmitted] = useState(false);
+  const [waitlistLoading, setWaitlistLoading] = useState(false);
+
+  const handleWaitlistSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setWaitlistLoading(true);
+    // Simulate a brief delay then show success
+    await new Promise(r => setTimeout(r, 800));
+    setWaitlistLoading(false);
+    setWaitlistSubmitted(true);
+  };
+
   const goToContact = () => navigate('/contact');
   const goToPrivacy = () => navigate('/privacy');
   const goToTerms = () => navigate('/terms');
@@ -103,7 +119,7 @@ export default function Home() {
       buttonText: "Start Free — No Credit Card",
       buttonStyle: "outline" as const,
       highlighted: false,
-      stripeKey: null as null | "proMonthly" | "proYearly" | "proLifetime" | "freeTrial",
+      stripeKey: "waitlist" as any,
     },
     {
       name: "Pro Monthly",
@@ -183,7 +199,7 @@ export default function Home() {
       buttonStyle: "default" as const,
       highlighted: false,
       isOffer: true,
-      stripeKey: "freeTrial" as const,
+      stripeKey: "waitlist" as any,
     },
   ];
 
@@ -501,7 +517,12 @@ export default function Home() {
                   <CardFooter>
                     <Button
                       onClick={() => {
-                        if (!plan.stripeKey) {
+                        if (plan.stripeKey === "waitlist") {
+                          setShowWaitlist(true);
+                          setWaitlistSubmitted(false);
+                          setWaitlistEmail("");
+                          setWaitlistName("");
+                        } else if (!plan.stripeKey) {
                           goToSignUp();
                         } else {
                           startCheckout({ plan: plan.stripeKey });
@@ -812,6 +833,91 @@ export default function Home() {
           </Button>
         </div>
       </div>
+
+      {/* Waitlist Modal */}
+      {showWaitlist && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ backgroundColor: 'rgba(0,0,0,0.6)' }}
+          onClick={(e) => { if (e.target === e.currentTarget) setShowWaitlist(false); }}
+        >
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 relative">
+            <button
+              onClick={() => setShowWaitlist(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {!waitlistSubmitted ? (
+              <>
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-violet-600 flex items-center justify-center">
+                    <Mail className="w-5 h-5 text-white" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-900">Join the Waitlist</h2>
+                </div>
+                <p className="text-gray-500 mb-6 text-sm">
+                  Be the first to know when YFIT AI launches. We'll send you early access and exclusive launch offers.
+                </p>
+                <form onSubmit={handleWaitlistSubmit} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+                    <input
+                      type="text"
+                      required
+                      value={waitlistName}
+                      onChange={e => setWaitlistName(e.target.value)}
+                      placeholder="First name"
+                      className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <input
+                      type="email"
+                      required
+                      value={waitlistEmail}
+                      onChange={e => setWaitlistEmail(e.target.value)}
+                      placeholder="you@example.com"
+                      className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <Button
+                    type="submit"
+                    disabled={waitlistLoading}
+                    className="w-full bg-gradient-to-r from-blue-600 to-violet-600 hover:opacity-90 text-white font-semibold py-2.5"
+                  >
+                    {waitlistLoading ? (
+                      <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Joining...</>
+                    ) : (
+                      "Join Waitlist — It's Free"
+                    )}
+                  </Button>
+                </form>
+                <p className="text-xs text-gray-400 mt-4 text-center">No spam. Unsubscribe anytime.</p>
+              </>
+            ) : (
+              <div className="text-center py-4">
+                <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+                  <Check className="w-8 h-8 text-green-600" />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">You're on the list!</h2>
+                <p className="text-gray-500 text-sm mb-2">
+                  Thanks, <strong>{waitlistName}</strong>! We'll email <strong>{waitlistEmail}</strong> when YFIT AI is ready for you.
+                </p>
+                <p className="text-gray-400 text-xs">Keep an eye on your inbox for early access and launch offers.</p>
+                <Button
+                  onClick={() => setShowWaitlist(false)}
+                  className="mt-6 bg-gradient-to-r from-blue-600 to-violet-600 text-white"
+                >
+                  Done
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
