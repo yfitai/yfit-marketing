@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "installCommand": "pnpm install --no-frozen-lockfile",
   "builds": [
     {
       "src": "api/index.ts",
@@ -10,8 +11,7 @@
       "use": "@vercel/static-build",
       "config": {
         "buildCommand": "vite build",
-        "outputDirectory": "dist/public",
-        "installCommand": "pnpm install --no-frozen-lockfile"
+        "outputDirectory": "dist/public"
       }
     }
   ],
