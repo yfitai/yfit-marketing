@@ -63,10 +63,10 @@
 - [ ] Final polish and publish
 
 ## March 24 2026 Session — Integration & Domain
-- [ ] Connect waitlist form to Supabase + Resend email system (send welcome email on signup)
-- [ ] Add waitlist entries to Supabase database table
-- [ ] Add SUPABASE_URL and SUPABASE_ANON_KEY to Vercel environment variables
-- [ ] Add RESEND_API_KEY to Vercel environment variables
+- [x] Connect waitlist form to Supabase + Resend email system (send welcome email on signup)
+- [x] Add waitlist entries to Supabase database table
+- [x] Add SUPABASE_URL and SUPABASE_ANON_KEY to Vercel environment variables
+- [x] Add RESEND_API_KEY to Vercel environment variables
 - [ ] Set up Stripe webhook endpoint for yfitai.com
 - [ ] Add STRIPE_WEBHOOK_SECRET to Vercel environment variables
 - [ ] Point yfitai.com domain to Vercel
