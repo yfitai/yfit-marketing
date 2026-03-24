@@ -913,17 +913,26 @@ export default function Home() {
                 <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
                   <Check className="w-8 h-8 text-green-600" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">You're on the list!</h2>
-                <p className="text-gray-500 text-sm mb-2">
-                  Thanks, <strong>{waitlistName}</strong>! We'll email <strong>{waitlistEmail}</strong> when YFIT AI is ready for you.
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">You're on the list! 🎉</h2>
+                <p className="text-gray-500 text-sm mb-3">
+                  Welcome, <strong>{waitlistName.trim().split(' ')[0]}</strong>! Check your inbox — we just sent you a welcome email at <strong>{waitlistEmail}</strong>.
                 </p>
-                <p className="text-gray-400 text-xs">Keep an eye on your inbox for early access and launch offers.</p>
+                <div className="bg-gradient-to-r from-blue-50 to-violet-50 border border-blue-100 rounded-xl p-4 mb-5">
+                  <p className="text-sm font-semibold text-gray-800 mb-1">Ready to start right now?</p>
+                  <p className="text-xs text-gray-500">Create your free account and get instant access to YFIT AI — no credit card required.</p>
+                </div>
                 <Button
-                  onClick={() => setShowWaitlist(false)}
-                  className="mt-6 bg-gradient-to-r from-blue-600 to-violet-600 text-white"
+                  onClick={() => { window.open('https://app.yfitai.com/signup', '_blank'); setShowWaitlist(false); }}
+                  className="w-full bg-gradient-to-r from-blue-600 to-violet-600 hover:opacity-90 text-white font-semibold py-3 text-base mb-3"
                 >
-                  Done
+                  Create My Free Account →
                 </Button>
+                <button
+                  onClick={() => setShowWaitlist(false)}
+                  className="text-xs text-gray-400 hover:text-gray-600 underline"
+                >
+                  I'll sign up later
+                </button>
               </div>
             )}
           </div>
