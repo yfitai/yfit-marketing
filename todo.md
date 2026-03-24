@@ -71,3 +71,31 @@
 - [ ] Add STRIPE_WEBHOOK_SECRET to Vercel environment variables
 - [ ] Point yfitai.com domain to Vercel
 - [ ] Claim Stripe sandbox (expires May 10 2026)
+
+## Next Session — Return To-Do List
+
+### Stripe (needs support@yfitai.com access restored first)
+- [ ] Log into Stripe dashboard at dashboard.stripe.com with support@yfitai.com
+- [ ] Claim Stripe sandbox (new link will be in email after access is restored — expires May 10 2026)
+- [ ] Verify price IDs exist in Stripe: Pro Monthly, Pro Yearly, Pro Lifetime
+- [ ] Add price IDs to Vercel env: STRIPE_PRICE_PRO_MONTHLY, STRIPE_PRICE_PRO_YEARLY, STRIPE_PRICE_PRO_LIFETIME
+- [ ] Create webhook endpoint: Stripe Dashboard → Developers → Webhooks → Add endpoint
+  - Endpoint URL: https://yfitai.com/api/stripe/webhook
+  - Events: checkout.session.completed, customer.subscription.updated, customer.subscription.deleted
+- [ ] Copy Webhook Signing Secret → add to Vercel as STRIPE_WEBHOOK_SECRET
+- [ ] Test checkout flow end-to-end in Stripe test mode
+
+### yfitai.com Domain (can do independently of Stripe)
+- [ ] Go to Vercel → yfit-marketing project → Settings → Domains
+- [ ] Add yfitai.com and www.yfitai.com as custom domains
+- [ ] Copy DNS records Vercel provides (A record + CNAME)
+- [ ] Add DNS records in domain registrar (GoDaddy or wherever yfitai.com is registered)
+- [ ] Wait 10-30 min for DNS propagation, then verify yfitai.com loads the marketing site
+- [ ] Update Stripe webhook URL to yfitai.com once domain is confirmed live
+
+### Manus Checkpoint / Publish Fix
+- [ ] Send Manus support ticket with this exact message:
+  "The webdev project yfit-marketing returns 'project not found' on every webdev_save_checkpoint call,
+   blocking the Publish button. The project was initialized with webdev_init_project but backend
+   metadata is missing. Please re-sync or re-register the project metadata for project: yfit-marketing."
+- [ ] Once fixed: run checkpoint save and use Publish button in Manus UI
