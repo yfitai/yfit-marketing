@@ -28,8 +28,19 @@ export default function Home() {
   const handleWaitlistSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setWaitlistLoading(true);
-    // Simulate a brief delay then show success
-    await new Promise(r => setTimeout(r, 800));
+    try {
+      const nameParts = waitlistName.trim().split(' ');
+      const firstName = nameParts[0] || waitlistName.trim();
+      const lastName = nameParts.slice(1).join(' ');
+      await fetch('/api/index?path=/api/waitlist/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: waitlistEmail, firstName, lastName }),
+      });
+    } catch (err) {
+      // Graceful degradation — show success even if API fails
+      console.warn('[Waitlist] Signup error:', err);
+    }
     setWaitlistLoading(false);
     setWaitlistSubmitted(true);
   };
