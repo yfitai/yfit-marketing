@@ -67,31 +67,22 @@
 - [x] Add waitlist entries to Supabase database table
 - [x] Add SUPABASE_URL and SUPABASE_ANON_KEY to Vercel environment variables
 - [x] Add RESEND_API_KEY to Vercel environment variables
-- [ ] Set up Stripe webhook endpoint for yfitai.com
-- [ ] Add STRIPE_WEBHOOK_SECRET to Vercel environment variables
-- [ ] Point yfitai.com domain to Vercel
-- [ ] Claim Stripe sandbox (expires May 10 2026)
+- [x] Set up Stripe webhook endpoint for yfitai.com (https://yfitai.com/api/stripe/webhook)
+- [x] Add STRIPE_WEBHOOK_SECRET to Vercel environment variables (whsec_rdcYlPNYh6WsGk0QycmFzdEqihyEv1kL)
+- [x] Point yfitai.com domain to Vercel
+- [x] Stripe sandbox skipped — using live account directly (acct_1S6GGcD2YT6Pvz5W)
 
 ## Next Session — Return To-Do List
 
 ### Stripe (needs support@yfitai.com access restored first)
-- [ ] Log into Stripe dashboard at dashboard.stripe.com with support@yfitai.com
-- [ ] Claim Stripe sandbox (new link will be in email after access is restored — expires May 10 2026)
-- [ ] Verify price IDs exist in Stripe: Pro Monthly, Pro Yearly, Pro Lifetime
-- [ ] Add price IDs to Vercel env: STRIPE_PRICE_PRO_MONTHLY, STRIPE_PRICE_PRO_YEARLY, STRIPE_PRICE_PRO_LIFETIME
-- [ ] Create webhook endpoint: Stripe Dashboard → Developers → Webhooks → Add endpoint
-  - Endpoint URL: https://yfitai.com/api/stripe/webhook
-  - Events: checkout.session.completed, customer.subscription.updated, customer.subscription.deleted
-- [ ] Copy Webhook Signing Secret → add to Vercel as STRIPE_WEBHOOK_SECRET
-- [ ] Test checkout flow end-to-end in Stripe test mode
+- [x] Log into Stripe dashboard with support@yfitai.com
+- [x] Webhook created: https://yfitai.com/api/stripe/webhook (3 events)
+- [x] STRIPE_WEBHOOK_SECRET added to Vercel
+- [ ] Add live price IDs to Vercel: STRIPE_PRICE_PRO_MONTHLY, STRIPE_PRICE_PRO_YEARLY, STRIPE_PRICE_PRO_LIFETIME
+- [ ] Test checkout flow end-to-end with live Stripe keys
 
 ### yfitai.com Domain (can do independently of Stripe)
-- [ ] Go to Vercel → yfit-marketing project → Settings → Domains
-- [ ] Add yfitai.com and www.yfitai.com as custom domains
-- [ ] Copy DNS records Vercel provides (A record + CNAME)
-- [ ] Add DNS records in domain registrar (GoDaddy or wherever yfitai.com is registered)
-- [ ] Wait 10-30 min for DNS propagation, then verify yfitai.com loads the marketing site
-- [ ] Update Stripe webhook URL to yfitai.com once domain is confirmed live
+- [x] yfitai.com and www.yfitai.com both verified and live on Vercel
 
 ### Manus Checkpoint / Publish Fix
 - [ ] Send Manus support ticket with this exact message:
