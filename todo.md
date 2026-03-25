@@ -90,3 +90,9 @@
    blocking the Publish button. The project was initialized with webdev_init_project but backend
    metadata is missing. Please re-sync or re-register the project metadata for project: yfit-marketing."
 - [ ] Once fixed: run checkpoint save and use Publish button in Manus UI
+
+## March 25 2026 Session — Stripe & Signup Flow Fixes
+- [x] Fix Free Basic button — navigate directly to app signup (not waitlist modal)
+- [x] Fix 1-Month Free button — navigate directly to app signup (not waitlist modal)
+- [x] Enable Stripe automatic tax collection on checkout (automatic_tax: {enabled: true}) — already in place
+- [ ] Verify checkout flow works end-to-end on live site

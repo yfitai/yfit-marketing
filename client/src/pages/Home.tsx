@@ -130,7 +130,7 @@ export default function Home() {
       buttonText: "Start Free — No Credit Card",
       buttonStyle: "outline" as const,
       highlighted: false,
-      stripeKey: "waitlist" as any,
+      stripeKey: "signup" as any,
     },
     {
       name: "Pro Monthly",
@@ -210,7 +210,7 @@ export default function Home() {
       buttonStyle: "default" as const,
       highlighted: false,
       isOffer: true,
-      stripeKey: "waitlist" as any,
+      stripeKey: "signup" as any,
     },
   ];
 
@@ -528,7 +528,9 @@ export default function Home() {
                   <CardFooter>
                     <Button
                       onClick={() => {
-                        if (plan.stripeKey === "waitlist") {
+                        if (plan.stripeKey === "signup") {
+                          window.open('https://app.yfitai.com/signup', '_blank');
+                        } else if (plan.stripeKey === "waitlist") {
                           setShowWaitlist(true);
                           setWaitlistSubmitted(false);
                           setWaitlistEmail("");
