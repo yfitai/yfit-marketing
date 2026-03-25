@@ -529,7 +529,7 @@ export default function Home() {
                     <Button
                       onClick={() => {
                         if (plan.stripeKey === "signup") {
-                          window.open('https://yfit-app.vercel.app/signup', '_blank');
+                          window.open('https://app.yfitai.com/signup', '_blank');
                         } else if (plan.stripeKey === "waitlist") {
                           setShowWaitlist(true);
                           setWaitlistSubmitted(false);
@@ -924,7 +924,7 @@ export default function Home() {
                   <p className="text-xs text-gray-500">Create your free account and get instant access to YFIT AI — no credit card required.</p>
                 </div>
                 <Button
-                  onClick={() => { window.open('https://yfit-app.vercel.app/signup', '_blank'); setShowWaitlist(false); }}
+                  onClick={() => { window.open('https://app.yfitai.com/signup', '_blank'); setShowWaitlist(false); }}
                   className="w-full bg-gradient-to-r from-blue-600 to-violet-600 hover:opacity-90 text-white font-semibold py-3 text-base mb-3"
                 >
                   Create My Free Account →
