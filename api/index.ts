@@ -5,7 +5,7 @@ import Stripe from "stripe";
 function getStripe(): Stripe | null {
   const secretKey = process.env.STRIPE_SECRET_KEY;
   if (!secretKey) return null;
-  return new Stripe(secretKey, { apiVersion: "2026-02-25.clover" });
+  return new Stripe(secretKey, { apiVersion: "2024-06-20" });
 }
 
 function getPriceIds() {
