@@ -96,3 +96,19 @@
 - [x] Fix 1-Month Free button — navigate directly to app signup (not waitlist modal)
 - [x] Enable Stripe automatic tax collection on checkout (automatic_tax: {enabled: true}) — already in place
 - [ ] Verify checkout flow works end-to-end on live site
+
+## March 25 2026 Evening Session — Webhook Fix & Payment Success Update
+- [x] Diagnosed Stripe webhook 307 redirect error (www vs non-www domain redirect)
+- [x] Created dedicated webhook handler at api/stripe/webhook.ts with raw body parsing
+- [x] Updated vercel.json to route /api/stripe/webhook directly to dedicated handler
+- [x] Updated Stripe webhook endpoint URL to https://www.yfitai.com/api/stripe/webhook
+- [x] Verified webhook returns 200 OK with {"received": true} response
+- [x] Completed live $12.99 test transaction — payment processed successfully
+- [x] Refunded $13.64 CAD test transaction (Mar 25, 8:42 PM)
+- [x] Replaced App Store / Google Play buttons on payment success page with "Create Your Account Now" button linking to https://app.yfitai.com/signup
+- [x] Updated payment success page steps to reflect current app availability
+
+## Next Session — Main App & Google Play
+- [ ] Google Play Console — promote from internal/beta testing to production (open track)
+- [ ] Social media automation setup in main YFIT app
+- [ ] Add App Store / Google Play buttons back to payment success page once apps are live
