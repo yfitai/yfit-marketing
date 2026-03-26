@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
-import { CheckCircle, Download, ArrowRight } from "lucide-react";
+import { CheckCircle, ArrowRight, UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -43,9 +43,9 @@ export default function PaymentSuccess() {
             <ul className="space-y-2">
               {[
                 "You will receive a confirmation email from Stripe",
-                "Download the YFIT AI app from the App Store or Google Play",
-                "Sign in with the same email you used at checkout",
-                "Your Pro features will be automatically unlocked",
+                "Create your YFIT account using the same email you used at checkout",
+                "Your Pro features will be automatically unlocked when you sign in",
+                "The YFIT mobile app is coming soon — we'll email you at launch",
               ].map((step, i) => (
                 <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
                   <span className="w-5 h-5 rounded-full bg-green-100 text-green-700 text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -57,27 +57,17 @@ export default function PaymentSuccess() {
             </ul>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={() => window.open("https://apps.apple.com", "_blank")}
-            >
-              <Download className="w-4 h-4 mr-2" />
-              App Store
-            </Button>
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={() => window.open("https://play.google.com", "_blank")}
-            >
-              <Download className="w-4 h-4 mr-2" />
-              Google Play
-            </Button>
-          </div>
+          <Button
+            className="w-full bg-green-600 hover:bg-green-700 text-white text-base py-6"
+            onClick={() => window.location.href = "https://app.yfitai.com/signup"}
+          >
+            <UserPlus className="w-5 h-5 mr-2" />
+            Create Your Account Now
+          </Button>
 
           <Button
-            className="w-full bg-green-600 hover:bg-green-700 text-white"
+            variant="outline"
+            className="w-full"
             onClick={() => window.location.href = "/"}
           >
             Return to Home
