@@ -5,11 +5,15 @@
   "outputDirectory": "dist/public",
   "framework": null,
   "rewrites": [
+    { "source": "/api/stripe/webhook", "destination": "/api/stripe/webhook" },
     { "source": "/api/(.*)", "destination": "/api/index" },
     { "source": "/((?!api).*)", "destination": "/index.html" }
   ],
   "functions": {
     "api/index.ts": {
+      "maxDuration": 30
+    },
+    "api/stripe/webhook.ts": {
       "maxDuration": 30
     }
   }
