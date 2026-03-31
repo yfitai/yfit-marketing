@@ -23,19 +23,34 @@ export default function Contact() {
     }));
   };
 
+  const [error, setError] = useState("");
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
+    setError("");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Something went wrong. Please try again.");
+      } else {
+        setSubmitted(true);
+        setFormData({ name: "", email: "", subject: "", message: "" });
+        setTimeout(() => setSubmitted(false), 8000);
+      }
+    } catch {
+      setError("Network error. Please check your connection and try again.");
+    } finally {
       setIsSubmitting(false);
-      setSubmitted(true);
-      setFormData({ name: "", email: "", subject: "", message: "" });
-      
-      // Reset success message after 5 seconds
-      setTimeout(() => setSubmitted(false), 5000);
-    }, 1000);
+    }
   };
 
   return (
@@ -94,9 +109,9 @@ export default function Contact() {
                 <p className="text-muted-foreground mb-4">
                   Check out our FAQ for quick answers to common questions.
                 </p>
-                <button onClick={() => document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' })} className="text-accent font-medium hover:underline cursor-pointer">
+                <a href="https://app.yfitai.com/faq" target="_blank" rel="noopener noreferrer" className="text-accent font-medium hover:underline cursor-pointer">
                   View FAQ
-                </button>
+                </a>
               </CardContent>
             </Card>
 
@@ -128,8 +143,14 @@ export default function Contact() {
             <CardContent>
               {submitted && (
                 <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-800">
-                  <p className="font-medium">Thank you for your message!</p>
-                  <p className="text-sm">We'll get back to you as soon as possible.</p>
+                  <p className="font-medium">✅ Message sent! Check your inbox for a confirmation.</p>
+                  <p className="text-sm">We typically respond within 4–6 hours. You can also <a href="https://app.yfitai.com/faq" target="_blank" rel="noopener noreferrer" className="underline font-medium">browse the FAQ</a> for quick answers.</p>
+                </div>
+              )}
+
+              {error && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-800">
+                  <p className="font-medium">⚠️ {error}</p>
                 </div>
               )}
               

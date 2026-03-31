@@ -276,5 +276,131 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
   }
 
+  // POST /api/contact
+  if (req.method === "POST" && path.includes("contact")) {
+    const resendKey = process.env.RESEND_API_KEY;
+    if (!resendKey) {
+      return res.status(503).json({ error: "Email service not configured" });
+    }
+
+    const { name, email, subject, message } = req.body as {
+      name: string;
+      email: string;
+      subject: string;
+      message: string;
+    };
+
+    if (!name || !email || !subject || !message) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
+
+    try {
+      // 1. Send notification email to support@yfitai.com
+      const supportHtml = `
+        <html>
+          <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; padding: 20px;">
+            <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 12px; border: 1px solid #e5e7eb; overflow: hidden;">
+              <div style="background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%); padding: 24px 30px;">
+                <h2 style="color: white; margin: 0; font-size: 20px;">New Contact Form Submission</h2>
+              </div>
+              <div style="padding: 30px;">
+                <table style="width: 100%; border-collapse: collapse;">
+                  <tr><td style="padding: 8px 0; font-weight: bold; width: 100px; color: #374151;">From:</td><td style="padding: 8px 0; color: #4b5563;">${name} &lt;${email}&gt;</td></tr>
+                  <tr><td style="padding: 8px 0; font-weight: bold; color: #374151;">Subject:</td><td style="padding: 8px 0; color: #4b5563;">${subject}</td></tr>
+                </table>
+                <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 20px 0;" />
+                <h3 style="color: #374151; margin-top: 0;">Message:</h3>
+                <div style="background: #f9fafb; padding: 20px; border-radius: 8px; border-left: 4px solid #3b82f6;">
+                  <p style="color: #4b5563; margin: 0; white-space: pre-wrap;">${message}</p>
+                </div>
+                <p style="margin-top: 20px; font-size: 13px; color: #9ca3af;">Reply directly to this email to respond to ${name}.</p>
+              </div>
+            </div>
+          </body>
+        </html>
+      `;
+
+      const supportRes = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${resendKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: "YFIT AI Contact Form <support@yfitai.com>",
+          to: ["support@yfitai.com"],
+          reply_to: email,
+          subject: `[Contact Form] ${subject}`,
+          html: supportHtml,
+        }),
+      });
+
+      if (!supportRes.ok) {
+        const errText = await supportRes.text();
+        console.error(`[Contact] Failed to send support notification (${supportRes.status}): ${errText}`);
+        return res.status(500).json({ error: "Failed to send message. Please try again." });
+      }
+
+      // 2. Send automated acknowledgement to the user
+      const userHtml = `
+        <html>
+          <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f3f4f6; padding: 40px 20px;">
+            <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+              <div style="background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%); padding: 40px 30px; text-align: center;">
+                <h1 style="color: white; margin: 0; font-size: 26px;">We Got Your Message! ✅</h1>
+              </div>
+              <div style="padding: 40px 30px;">
+                <h2 style="color: #1f2937; margin-top: 0;">Hi ${name}! 👋</h2>
+                <p style="font-size: 16px; color: #4b5563;">
+                  Thanks for reaching out to YFIT AI. We received your message and will get back to you within <strong>4–6 hours</strong> (usually sooner!).
+                </p>
+                <div style="background: #f9fafb; border-left: 4px solid #3b82f6; padding: 16px 20px; margin: 24px 0; border-radius: 8px;">
+                  <p style="margin: 0; font-weight: bold; color: #374151;">Your message:</p>
+                  <p style="margin: 8px 0 0; color: #6b7280; font-style: italic; white-space: pre-wrap;">${message}</p>
+                </div>
+                <p style="font-size: 15px; color: #4b5563;">
+                  While you wait, you might find a quick answer in our FAQ:
+                </p>
+                <div style="text-align: center; margin: 24px 0;">
+                  <a href="https://app.yfitai.com/faq" style="display: inline-block; background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%); color: white; padding: 14px 32px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px;">Browse the FAQ →</a>
+                </div>
+                <p style="font-size: 14px; color: #6b7280;">
+                  Stay strong,<br/><strong>The YFIT AI Support Team</strong>
+                </p>
+              </div>
+              <div style="background: #f9fafb; padding: 20px; text-align: center; border-top: 1px solid #e5e7eb;">
+                <p style="font-size: 12px; color: #9ca3af; margin: 4px 0;">YFIT AI — Your Personal Fitness Coach</p>
+                <p style="font-size: 12px; color: #9ca3af; margin: 4px 0;">
+                  <a href="https://yfitai.com" style="color: #3b82f6; text-decoration: none;">yfitai.com</a> | 
+                  <a href="mailto:support@yfitai.com" style="color: #3b82f6; text-decoration: none;">support@yfitai.com</a>
+                </p>
+              </div>
+            </div>
+          </body>
+        </html>
+      `;
+
+      await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${resendKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: "YFIT AI Support <support@yfitai.com>",
+          to: [email],
+          subject: "We received your message — YFIT AI Support",
+          html: userHtml,
+        }),
+      });
+
+      console.log(`[Contact] Message from ${email} forwarded to support@yfitai.com`);
+      return res.json({ success: true, message: "Message sent successfully" });
+    } catch (err) {
+      console.error("[Contact] Error:", err);
+      return res.status(500).json({ error: "Failed to send message. Please try again." });
+    }
+  }
+
   return res.status(404).json({ error: "Not found" });
 }
