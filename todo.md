@@ -118,3 +118,7 @@
 - [x] Added automated acknowledgement email to user on form submission (includes FAQ link)
 - [x] Updated "View FAQ" button to link to https://app.yfitai.com/faq (opens in new tab)
 - [x] Fixed git remote — origin now correctly points to yfit-marketing GitHub repo
+
+## Mar 31 2026 — Fixes
+- [ ] Fix contact form "Email service not configured" error (RESEND_API_KEY not injected into new endpoint)
+- [ ] Build public FAQ page at yfitai.com/faq (no sign-in required) and link View FAQ button there

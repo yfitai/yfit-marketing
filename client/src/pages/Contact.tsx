@@ -109,7 +109,7 @@ export default function Contact() {
                 <p className="text-muted-foreground mb-4">
                   Check out our FAQ for quick answers to common questions.
                 </p>
-                <a href="https://app.yfitai.com/faq" target="_blank" rel="noopener noreferrer" className="text-accent font-medium hover:underline cursor-pointer">
+                <a href="/faq" className="text-accent font-medium hover:underline cursor-pointer">
                   View FAQ
                 </a>
               </CardContent>
