@@ -122,3 +122,13 @@
 ## Mar 31 2026 — Fixes
 - [ ] Fix contact form "Email service not configured" error (RESEND_API_KEY not injected into new endpoint)
 - [ ] Build public FAQ page at yfitai.com/faq (no sign-in required) and link View FAQ button there
+
+## Mar 31 2026 — AI Auto-Responder & Marketing Improvements
+- [x] Upgrade contact form API to call OpenAI GPT-4o-mini and send AI-generated answer as auto-reply
+- [x] Add OpenAI API key to Vercel environment variables
+- [x] Add Open Graph / Twitter Card meta tags to index.html for social sharing
+- [x] Add JSON-LD structured data (schema.org SoftwareApplication) for SEO
+- [x] Add robots.txt and sitemap.xml
+- [x] Add cookie consent banner (GDPR/CCPA compliance)
+- [ ] Add social proof section (app store ratings, user count, or press mentions)
+- [x] Fix FAQ link in auto-reply email to point to yfitai.com/faq (not app.yfitai.com/faq)

@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Disallow internal/auth pages from indexing
+Disallow: /signin
+Disallow: /signup
+Disallow: /payment-success
+
+Sitemap: https://yfitai.com/sitemap.xml
