@@ -132,3 +132,9 @@
 - [x] Add cookie consent banner (GDPR/CCPA compliance)
 - [ ] Add social proof section (app store ratings, user count, or press mentions)
 - [x] Fix FAQ link in auto-reply email to point to yfitai.com/faq (not app.yfitai.com/faq)
+
+## Mar 31 2026 — Supabase Contact Form Logging
+- [ ] Create contact_submissions table in Supabase (name, email, subject, message, ai_answer, ai_answered, created_at)
+- [ ] Update api/index.ts to log every contact submission and AI reply to Supabase
+- [ ] Add SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY to Vercel env vars
+- [ ] Test end-to-end: submit form → verify record appears in Supabase

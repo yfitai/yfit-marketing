@@ -496,6 +496,43 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }),
       });
 
+      // 4. Log submission to Supabase contact_submissions table
+      const supabaseUrl = process.env.SUPABASE_URL;
+      const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+      if (supabaseUrl && supabaseServiceKey) {
+        try {
+          const logRes = await fetch(`${supabaseUrl}/rest/v1/contact_submissions`, {
+            method: "POST",
+            headers: {
+              "apikey": supabaseServiceKey,
+              "Authorization": `Bearer ${supabaseServiceKey}`,
+              "Content-Type": "application/json",
+              "Prefer": "return=minimal",
+            },
+            body: JSON.stringify({
+              name,
+              email,
+              subject: subject || null,
+              message,
+              ai_answer: aiAnswer || null,
+              ai_answered: hasAiAnswer,
+            }),
+          });
+
+          if (logRes.ok) {
+            console.log(`[Contact] Logged to Supabase — AI answered: ${hasAiAnswer}`);
+          } else {
+            const errText = await logRes.text();
+            console.warn(`[Contact] Supabase log failed (${logRes.status}): ${errText}`);
+          }
+        } catch (logErr) {
+          console.warn("[Contact] Supabase logging error (non-fatal):", logErr);
+        }
+      } else {
+        console.warn("[Contact] Supabase not configured — skipping log");
+      }
+
       console.log(`[Contact] Message from ${email} — AI answered: ${hasAiAnswer}`);
       return res.json({ success: true, message: "Message sent successfully", aiAnswered: hasAiAnswer });
     } catch (err) {
