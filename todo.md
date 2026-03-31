@@ -59,7 +59,7 @@
 - [x] Added colored hero preview boxes matching feature card colors
 - [x] Saved PRICING_CONFIG.md for future reference
 - [ ] Stripe payment integration
-- [ ] Contact form email sending
+- [x] Contact form email sending
 - [ ] Final polish and publish
 
 ## March 24 2026 Session — Integration & Domain
@@ -112,3 +112,9 @@
 - [ ] Google Play Console — promote from internal/beta testing to production (open track)
 - [ ] Social media automation setup in main YFIT app
 - [ ] Add App Store / Google Play buttons back to payment success page once apps are live
+
+## Mar 31 2026 Session — Contact Form & FAQ Link
+- [x] Wired contact form to Resend — sends notification to support@yfitai.com with reply-to set to user's email
+- [x] Added automated acknowledgement email to user on form submission (includes FAQ link)
+- [x] Updated "View FAQ" button to link to https://app.yfitai.com/faq (opens in new tab)
+- [x] Fixed git remote — origin now correctly points to yfit-marketing GitHub repo
