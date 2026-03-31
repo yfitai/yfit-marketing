@@ -11,7 +11,7 @@ export const config = {
 function getStripe(): Stripe | null {
   const secretKey = process.env.STRIPE_SECRET_KEY;
   if (!secretKey) return null;
-  return new Stripe(secretKey, { apiVersion: "2024-06-20" });
+  return new Stripe(secretKey, { apiVersion: "2024-06-20" as any });
 }
 
 async function getRawBody(req: VercelRequest): Promise<Buffer> {

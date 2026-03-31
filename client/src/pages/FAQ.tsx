@@ -9,158 +9,85 @@ const faqCategories = [
     icon: "🚀",
     questions: [
       {
-        q: "What is YFIT AI?",
-        a: "YFIT AI is your personal AI-powered fitness and wellness coach. It combines smart workout planning, nutrition tracking, medication management, and daily health coaching all in one app — personalized specifically to you.",
+        q: "What is YFIT AI and how does it work?",
+        a: "YFIT AI is your personal AI-powered fitness coach that combines workout tracking, nutrition logging, medication management, and daily coaching in one app. You tell YFIT your goals, fitness level, and health details — and the AI builds a personalized plan, analyzes your exercise form via your camera, tracks your meals with a barcode scanner, and sends you daily coaching tips. It learns and adapts as you progress.",
       },
       {
-        q: "How do I get started?",
-        a: "Simply create a free account at app.yfitai.com. You can start using the core features right away. Upgrade to Pro at any time to unlock advanced AI coaching, unlimited tracking, and priority support.",
+        q: "Do I need any equipment or a gym membership?",
+        a: "No equipment or gym membership is required. YFIT works for home workouts, gym sessions, outdoor training, and everything in between. The app includes bodyweight workout plans, dumbbell routines, full gym programs, and cardio tracking — so it adapts to whatever you have available.",
       },
       {
-        q: "Is YFIT AI free to use?",
-        a: "Yes! YFIT AI has a free plan that gives you access to core features. Our Pro plan ($12.99/month, $99.99/year, or $249.99 lifetime) unlocks advanced AI coaching, unlimited history, and all premium features.",
+        q: "How is YFIT different from other fitness apps?",
+        a: "Three things set YFIT apart. First, real-time AI form analysis uses your phone's camera to watch your exercise technique and give instant feedback — like having a personal trainer watching every rep. Second, YFIT is the only fitness app that also tracks medications and checks for interactions with your supplements and nutrition. Third, everything is connected: your workouts, food, medications, and progress all feed into one AI that gives you a complete picture of your health.",
       },
       {
-        q: "What devices does YFIT AI work on?",
-        a: "YFIT AI works on any device with a web browser — desktop, tablet, or phone. Native iOS and Android apps are coming soon.",
-      },
-      {
-        q: "Do I need any fitness equipment?",
-        a: "No equipment is required. YFIT AI creates workouts for any situation — home, gym, or outdoors — based on what you have available.",
+        q: "Is there a free plan? What does it include?",
+        a: "Yes — YFIT has a free Basic plan with no credit card required. It includes workout logging, basic nutrition tracking, and access to the exercise library. For full AI coaching, form analysis, medication tracking, barcode scanning, and advanced analytics, you'll need a Pro plan. We also offer a limited-time free month of Pro so you can experience everything before committing.",
       },
     ],
   },
   {
-    id: "ai-coach",
-    label: "AI Coach",
+    id: "ai-features",
+    label: "AI Features",
     icon: "🤖",
     questions: [
       {
-        q: "How does the AI coach work?",
-        a: "The AI coach learns your goals, fitness level, health conditions, and preferences. It then creates personalized workout and nutrition plans, adjusts them as you progress, and answers your health questions in plain, easy-to-understand language.",
+        q: "How does the AI form analysis work?",
+        a: "When you start an exercise, you position your phone so the camera can see you. YFIT's AI tracks your body position in real time and compares it to correct form benchmarks. It gives you instant audio and visual cues — for example, telling you to keep your back straight during a deadlift or to lower your squat depth. No special equipment is needed, just your phone camera.",
       },
       {
-        q: "Can the AI coach answer my health questions?",
-        a: "Yes — the AI coach can answer general fitness, nutrition, and wellness questions. It is designed to be helpful and easy to understand. For medical advice, always consult your doctor.",
+        q: "Can YFIT track my medications and supplements?",
+        a: "Yes — this is one of YFIT's unique features. You can log all your medications, vitamins, and supplements. The app tracks your dosage schedule, sends reminders, and checks for potential interactions between your medications and the nutrients in your diet. This is especially useful for athletes taking pre-workout supplements or anyone managing a health condition alongside their fitness goals.",
       },
       {
-        q: "How accurate is the AI coaching?",
-        a: "The AI is trained on evidence-based fitness and nutrition science. It improves as it learns more about you. That said, it is a coaching tool — not a medical device. Always check with a healthcare provider for medical concerns.",
+        q: "How does nutrition tracking work? Do I have to weigh everything?",
+        a: "YFIT makes nutrition tracking as easy as possible. You can scan barcodes on packaged food for instant logging, search a database of millions of foods, or describe a meal in plain language and let the AI estimate the macros. You don't have to weigh everything — the app supports portion estimates and learns your common meals over time to make logging faster.",
       },
       {
-        q: "Can I ask the AI coach anything?",
-        a: "You can ask about workouts, nutrition, supplements, recovery, sleep, stress, and general wellness. The AI responds in simple, friendly language suitable for all fitness levels.",
-      },
-    ],
-  },
-  {
-    id: "workouts",
-    label: "Workouts",
-    icon: "💪",
-    questions: [
-      {
-        q: "How are my workouts personalized?",
-        a: "During setup, you tell YFIT AI your fitness goals, current fitness level, available equipment, and any physical limitations. The AI builds a plan specifically for you and adjusts it over time based on your progress.",
-      },
-      {
-        q: "Can I create my own custom workouts?",
-        a: "Yes. You can build custom workouts from scratch or modify the AI-generated ones to fit your preferences.",
-      },
-      {
-        q: "What types of workouts does YFIT AI support?",
-        a: "YFIT AI supports strength training, cardio, HIIT, yoga, stretching, walking programs, and more. It covers beginner to advanced levels.",
-      },
-      {
-        q: "Can YFIT AI help me if I have an injury or limitation?",
-        a: "Yes. You can enter your physical limitations during setup and the AI will avoid exercises that could aggravate them. Always consult your doctor before starting a new exercise program if you have a medical condition.",
-      },
-    ],
-  },
-  {
-    id: "nutrition",
-    label: "Nutrition",
-    icon: "🥗",
-    questions: [
-      {
-        q: "Does YFIT AI track calories and macros?",
-        a: "Yes. You can log meals, track calories, protein, carbs, and fats, and get AI-powered suggestions to hit your nutrition goals.",
-      },
-      {
-        q: "Can YFIT AI create meal plans?",
-        a: "Yes. The AI creates personalized meal plans based on your goals, dietary preferences, and any food restrictions you have.",
-      },
-      {
-        q: "Does YFIT AI support special diets?",
-        a: "Yes — YFIT AI supports a wide range of dietary preferences including vegetarian, vegan, keto, paleo, gluten-free, and more.",
+        q: "Does YFIT give me a personalized workout plan?",
+        a: "Yes. When you set up your profile, you enter your goals (weight loss, muscle gain, endurance, etc.), current fitness level, available equipment, and how many days per week you want to train. The AI generates a structured program tailored to you. As you complete workouts and log progress, the plan automatically adjusts — increasing difficulty when you're ready and modifying exercises if you report discomfort or injury.",
       },
     ],
   },
   {
     id: "billing",
-    label: "Billing & Plans",
+    label: "Pricing & Billing",
     icon: "💳",
     questions: [
       {
-        q: "What plans are available?",
-        a: "YFIT AI offers four plans: Free (core features), Pro Monthly ($12.99/month), Pro Yearly ($99.99/year — save 36%), and Pro Lifetime ($249.99 one-time payment — best value).",
+        q: "What are the Pro plan options and prices?",
+        a: "YFIT Pro is available in three options: Monthly at $12.99/month, Yearly at $99.99/year (saving 35% vs monthly — our Best Value), and Lifetime at $249.99 as a one-time payment (our Most Popular option). All Pro plans include the full feature set: AI form analysis, medication tracking, barcode nutrition scanning, advanced analytics, and unlimited AI coaching. Prices are in USD.",
       },
       {
-        q: "Can I cancel my subscription anytime?",
-        a: "Yes. You can cancel your Pro Monthly or Pro Yearly subscription at any time. You will keep access until the end of your current billing period.",
-      },
-      {
-        q: "Is my payment information secure?",
-        a: "Yes. All payments are processed by Stripe, a PCI-compliant payment processor. YFIT AI never stores your credit card details.",
+        q: "Can I cancel my subscription at any time?",
+        a: "Yes, absolutely. You can cancel your Pro subscription at any time through your account settings with no cancellation fees and no questions asked. When you cancel, you keep Pro access until the end of your current billing period. After that, your account moves to the free Basic plan and your data is preserved.",
       },
       {
         q: "Do you offer refunds?",
-        a: "We offer a 7-day money-back guarantee on all paid plans. Contact support@yfitai.com within 7 days of purchase if you are not satisfied.",
+        a: "Yes — we offer a 30-day money-back guarantee on all Pro plans. If you're not satisfied within the first 30 days, contact us at support@yfitai.com and we'll process a full refund. The 30-day guarantee applies to Lifetime plans as well.",
       },
       {
-        q: "What happens to my data if I cancel?",
-        a: "Your data is retained for 30 days after cancellation. You can export your data at any time from your account settings.",
+        q: "Is my payment information secure?",
+        a: "Yes. All payments are processed by Stripe, a PCI-DSS Level 1 certified payment processor — the same standard used by Amazon and Google. YFIT never stores your credit card details on our servers.",
       },
     ],
   },
   {
-    id: "account",
-    label: "Account & Privacy",
+    id: "privacy",
+    label: "Privacy & Security",
     icon: "🔒",
     questions: [
       {
-        q: "How do I reset my password?",
-        a: 'Go to app.yfitai.com and click "Forgot Password" on the sign-in page. Enter your email and we will send you a reset link.',
+        q: "Is my health and fitness data secure?",
+        a: "Yes. All your data is encrypted in transit and at rest using industry-standard AES-256 encryption. We never sell your personal or health data to third parties. Your health information — including medications, workouts, and nutrition — is stored securely and only accessible to you. You can request a full export or deletion of your data at any time by emailing support@yfitai.com.",
       },
       {
-        q: "How do I delete my account?",
-        a: "You can delete your account from Settings → Account → Delete Account. This permanently removes all your data. Contact support@yfitai.com if you need help.",
+        q: "Does YFIT share my data with advertisers or third parties?",
+        a: "No. YFIT does not sell or share your personal health data with advertisers or data brokers. We use your data solely to power your personalized coaching experience within the app. We may use anonymized, aggregated data to improve the AI — but this is never linked back to you individually.",
       },
       {
-        q: "Is my health data private?",
-        a: "Yes. Your health data is encrypted and never sold to third parties. We comply with applicable privacy laws. Read our full Privacy Policy at yfitai.com/privacy.",
-      },
-      {
-        q: "Can I export my data?",
-        a: "Yes. You can export all your workout history, nutrition logs, and progress data from your account settings at any time.",
-      },
-    ],
-  },
-  {
-    id: "technical",
-    label: "Technical Support",
-    icon: "🛠️",
-    questions: [
-      {
-        q: "The app is not loading. What should I do?",
-        a: "Try refreshing the page, clearing your browser cache, or using a different browser. If the problem continues, contact support@yfitai.com.",
-      },
-      {
-        q: "I paid but my Pro features are not showing. What do I do?",
-        a: "Sign out and sign back in using the same email you used at checkout. Your Pro features should activate automatically. If not, contact support@yfitai.com with your confirmation ID.",
-      },
-      {
-        q: "Which browsers are supported?",
-        a: "YFIT AI works best on Chrome, Safari, Firefox, and Edge (latest versions). We recommend keeping your browser up to date.",
+        q: "How do I delete my account and data?",
+        a: "You can request full account and data deletion by emailing support@yfitai.com. We will permanently delete your account, workout history, nutrition logs, health data, and all associated information within 30 days of your request. This action is irreversible, so please export any data you want to keep before requesting deletion.",
       },
     ],
   },
@@ -199,10 +126,11 @@ export default function FAQ() {
       <nav className="border-b bg-background/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 cursor-pointer">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">Y</span>
-            </div>
-            <span className="font-bold text-xl">YFIT AI</span>
+            <img
+              src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663099417101/YPVUcoNPoLMtiepj.png"
+              alt="YFIT AI"
+              className="h-10 w-auto"
+            />
           </Link>
           <div className="flex items-center gap-4">
             <Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
@@ -335,12 +263,20 @@ export default function FAQ() {
           <p className="text-muted-foreground mb-6">
             Our support team typically responds within 4–6 hours.
           </p>
-          <Link
-            href="/contact"
-            className="inline-block bg-gradient-to-r from-primary to-accent text-white px-8 py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity"
-          >
-            Contact Support →
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link
+              href="/contact"
+              className="inline-block bg-gradient-to-r from-primary to-accent text-white px-8 py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity"
+            >
+              Contact Support →
+            </Link>
+            <a
+              href="https://app.yfitai.com/signup"
+              className="inline-block bg-white border border-primary/30 text-primary px-8 py-3 rounded-xl font-semibold hover:bg-primary/5 transition-colors"
+            >
+              Start Free — No Card Required
+            </a>
+          </div>
         </div>
       </div>
 
