@@ -121,10 +121,10 @@ export default function Home() {
       features: [
         "Basic workout tracking",
         "Manual meal logging",
-        "3 saved workout routines",
+        "2 saved workout routines",
         "Basic progress tracking",
         "Weight & body metrics",
-        "5 AI form analyses/month",
+        "3 AI form analyses/month",
         "Limited AI Coach queries"
       ],
       buttonText: "Start Free — No Credit Card",
@@ -610,7 +610,7 @@ export default function Home() {
                   {
                     section: "AI FEATURES",
                     rows: [
-                      { label: "AI Form Analysis",          free: "5/month", monthly: "Unlimited", yearly: "Unlimited", lifetime: "Unlimited" },
+                      { label: "AI Form Analysis",          free: "3/month", monthly: "Unlimited", yearly: "Unlimited", lifetime: "Unlimited" },
                       { label: "AI Coach",                  free: "Limited", monthly: "Unlimited", yearly: "Unlimited", lifetime: "Unlimited" },
                       { label: "AI Predictions & Forecasts",free: "❌", monthly: "✅", yearly: "✅", lifetime: "✅" },
                       { label: "Personalised Meal Plans",   free: "❌", monthly: "✅", yearly: "✅", lifetime: "✅" },
@@ -620,7 +620,7 @@ export default function Home() {
                   {
                     section: "PLANNING",
                     rows: [
-                      { label: "Saved Workout Routines",    free: "3", monthly: "Unlimited", yearly: "Unlimited", lifetime: "Unlimited" },
+                      { label: "Saved Workout Routines",    free: "2", monthly: "Unlimited", yearly: "Unlimited", lifetime: "Unlimited" },
                       { label: "Grocery Lists",             free: "❌", monthly: "✅", yearly: "✅", lifetime: "✅" },
                       { label: "Provider Reports",          free: "❌", monthly: "✅", yearly: "✅", lifetime: "✅" },
                       { label: "Medication Reminders",      free: "❌", monthly: "✅", yearly: "✅", lifetime: "✅" },
