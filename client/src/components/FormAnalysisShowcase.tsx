@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 // Skeleton joint positions for a squat exercise (normalized 0-1 coordinates)
-// Each frame represents a point in the squat motion cycle
 const SQUAT_FRAMES = [
-  // Standing upright
   {
     joints: {
       head: [0.5, 0.08], neck: [0.5, 0.16],
@@ -14,9 +12,8 @@ const SQUAT_FRAMES = [
       leftKnee: [0.42, 0.70], rightKnee: [0.58, 0.70],
       leftAnkle: [0.42, 0.90], rightAnkle: [0.58, 0.90],
     },
-    feedback: { text: "Good starting position", color: "#10b981", score: 98 },
+    feedback: { text: "Good starting position", color: "#22c55e", score: 98, type: "success" },
   },
-  // Beginning descent
   {
     joints: {
       head: [0.5, 0.12], neck: [0.5, 0.20],
@@ -27,9 +24,8 @@ const SQUAT_FRAMES = [
       leftKnee: [0.40, 0.72], rightKnee: [0.60, 0.72],
       leftAnkle: [0.41, 0.90], rightAnkle: [0.59, 0.90],
     },
-    feedback: { text: "Keep chest up", color: "#f59e0b", score: 85 },
+    feedback: { text: "Keep chest up", color: "#f59e0b", score: 85, type: "warning" },
   },
-  // Mid squat
   {
     joints: {
       head: [0.5, 0.20], neck: [0.5, 0.28],
@@ -40,9 +36,8 @@ const SQUAT_FRAMES = [
       leftKnee: [0.36, 0.74], rightKnee: [0.64, 0.74],
       leftAnkle: [0.40, 0.90], rightAnkle: [0.60, 0.90],
     },
-    feedback: { text: "Knees tracking over toes ✓", color: "#10b981", score: 92 },
+    feedback: { text: "Knees tracking over toes ✓", color: "#22c55e", score: 92, type: "success" },
   },
-  // Deep squat
   {
     joints: {
       head: [0.5, 0.28], neck: [0.5, 0.36],
@@ -53,9 +48,8 @@ const SQUAT_FRAMES = [
       leftKnee: [0.33, 0.76], rightKnee: [0.67, 0.76],
       leftAnkle: [0.39, 0.90], rightAnkle: [0.61, 0.90],
     },
-    feedback: { text: "Depth reached — parallel ✓", color: "#10b981", score: 96 },
+    feedback: { text: "Go deeper — thighs parallel to ground", color: "#f59e0b", score: 78, type: "warning" },
   },
-  // Rising
   {
     joints: {
       head: [0.5, 0.20], neck: [0.5, 0.28],
@@ -66,9 +60,8 @@ const SQUAT_FRAMES = [
       leftKnee: [0.36, 0.74], rightKnee: [0.64, 0.74],
       leftAnkle: [0.40, 0.90], rightAnkle: [0.60, 0.90],
     },
-    feedback: { text: "Drive through heels ✓", color: "#10b981", score: 94 },
+    feedback: { text: "Drive through heels ✓", color: "#22c55e", score: 94, type: "success" },
   },
-  // Back to standing
   {
     joints: {
       head: [0.5, 0.08], neck: [0.5, 0.16],
@@ -79,8 +72,17 @@ const SQUAT_FRAMES = [
       leftKnee: [0.42, 0.70], rightKnee: [0.58, 0.70],
       leftAnkle: [0.42, 0.90], rightAnkle: [0.58, 0.90],
     },
-    feedback: { text: "Rep complete — great form!", color: "#10b981", score: 98 },
+    feedback: { text: "Good squat!", color: "#22c55e", score: 96, type: "success" },
   },
+];
+
+// Per-rep summary messages matching the real app
+const REP_SUMMARIES = [
+  { type: "warning", message: "Rep 1 — Go deeper: aim for thighs parallel to ground" },
+  { type: "success", message: "Rep 2 — Good squat! Keep chest up on descent" },
+  { type: "success", message: "Rep 3 — Good depth! Knees tracking well" },
+  { type: "warning", message: "Rep 4 — Knees too far forward — push hips back" },
+  { type: "success", message: "Rep 5 — Good squat!" },
 ];
 
 const BONES = [
@@ -110,6 +112,8 @@ function lerpJoints(
   return result;
 }
 
+type FeedbackEntry = { type: string; message: string; time: string };
+
 export default function FormAnalysisShowcase() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animRef = useRef<number>(0);
@@ -117,6 +121,24 @@ export default function FormAnalysisShowcase() {
   const [currentFeedback, setCurrentFeedback] = useState(SQUAT_FRAMES[0].feedback);
   const [repCount, setRepCount] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [feedbackHistory, setFeedbackHistory] = useState<FeedbackEntry[]>([
+    { type: "success", message: "Session started — Bodyweight Squat selected", time: "0:00" },
+  ]);
+  const repCountRef = useRef(0);
+  const sessionSecondsRef = useRef(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Session timer
+  useEffect(() => {
+    if (isPlaying) {
+      timerRef.current = setInterval(() => {
+        sessionSecondsRef.current += 1;
+      }, 1000);
+    } else {
+      if (timerRef.current) clearInterval(timerRef.current);
+    }
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [isPlaying]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -124,7 +146,7 @@ export default function FormAnalysisShowcase() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const FRAME_DURATION = 600; // ms per frame
+    const FRAME_DURATION = 600;
     const TOTAL_DURATION = SQUAT_FRAMES.length * FRAME_DURATION;
 
     let lastTime = performance.now();
@@ -138,7 +160,7 @@ export default function FormAnalysisShowcase() {
       ctx.clearRect(0, 0, W, H);
 
       // Background grid
-      ctx.strokeStyle = "rgba(59,130,246,0.08)";
+      ctx.strokeStyle = "rgba(34,197,94,0.06)";
       ctx.lineWidth = 1;
       for (let x = 0; x < W; x += 40) {
         ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
@@ -148,7 +170,7 @@ export default function FormAnalysisShowcase() {
       }
 
       // Floor line
-      ctx.strokeStyle = "rgba(59,130,246,0.3)";
+      ctx.strokeStyle = "rgba(34,197,94,0.25)";
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(W * 0.1, H * 0.92);
@@ -157,8 +179,8 @@ export default function FormAnalysisShowcase() {
 
       // Score arc
       const score = feedback.score;
-      const scoreColor = score >= 90 ? "#10b981" : score >= 75 ? "#f59e0b" : "#ef4444";
-      ctx.strokeStyle = "rgba(255,255,255,0.1)";
+      const scoreColor = score >= 90 ? "#22c55e" : score >= 75 ? "#f59e0b" : "#ef4444";
+      ctx.strokeStyle = "rgba(255,255,255,0.08)";
       ctx.lineWidth = 8;
       ctx.beginPath();
       ctx.arc(W * 0.85, H * 0.18, 28, 0, Math.PI * 2);
@@ -173,7 +195,7 @@ export default function FormAnalysisShowcase() {
       ctx.textAlign = "center";
       ctx.fillText(`${score}`, W * 0.85, H * 0.18 + 5);
 
-      // Draw bones
+      // Draw bones — green limbs (matching app #00FF00 → #22c55e)
       for (const [a, b] of BONES) {
         const jA = joints[a];
         const jB = joints[b];
@@ -183,10 +205,9 @@ export default function FormAnalysisShowcase() {
         const x2 = jB[0] * W;
         const y2 = jB[1] * H;
 
-        // Glow effect
-        ctx.shadowColor = "#3b82f6";
-        ctx.shadowBlur = 12;
-        ctx.strokeStyle = "rgba(99,179,237,0.6)";
+        ctx.shadowColor = "#22c55e";
+        ctx.shadowBlur = 10;
+        ctx.strokeStyle = "rgba(34,197,94,0.55)";
         ctx.lineWidth = 4;
         ctx.lineCap = "round";
         ctx.beginPath();
@@ -194,9 +215,8 @@ export default function FormAnalysisShowcase() {
         ctx.lineTo(x2, y2);
         ctx.stroke();
 
-        // Core line
         ctx.shadowBlur = 0;
-        ctx.strokeStyle = "#93c5fd";
+        ctx.strokeStyle = "#86efac";
         ctx.lineWidth = 2.5;
         ctx.beginPath();
         ctx.moveTo(x1, y1);
@@ -204,17 +224,21 @@ export default function FormAnalysisShowcase() {
         ctx.stroke();
       }
 
-      // Draw joints
+      // Draw joints — red (matching app #FF0000 → #ef4444)
       for (const [key, pos] of Object.entries(joints)) {
         const x = pos[0] * W;
         const y = pos[1] * H;
         const isKnee = key.includes("Knee");
         const isHip = key.includes("Hip");
-        const radius = isKnee || isHip ? 7 : key === "head" ? 10 : 5;
-        const color = isKnee ? "#f59e0b" : isHip ? "#a78bfa" : "#60a5fa";
+        const isShoulder = key.includes("Shoulder");
+        const isElbow = key.includes("Elbow");
+        const isAnkle = key.includes("Ankle");
+        const isJoint = isKnee || isHip || isShoulder || isElbow || isAnkle;
+        const radius = isKnee || isHip ? 7 : key === "head" ? 10 : isJoint ? 6 : 5;
+        const color = "#ef4444"; // All joints red — matches app
 
         ctx.shadowColor = color;
-        ctx.shadowBlur = 15;
+        ctx.shadowBlur = 14;
         ctx.fillStyle = color;
         ctx.beginPath();
         ctx.arc(x, y, radius, 0, Math.PI * 2);
@@ -233,16 +257,16 @@ export default function FormAnalysisShowcase() {
       ctx.strokeStyle = pillColor;
       ctx.lineWidth = 1.5;
       ctx.shadowBlur = 0;
-      const pillW = 200;
+      const pillW = 220;
       const pillH = 32;
       const pillX = (W - pillW) / 2;
       const pillY = H * 0.04;
       ctx.beginPath();
-      ctx.roundRect(pillX, pillY, pillW, pillH, 16);
+      (ctx as CanvasRenderingContext2D).roundRect(pillX, pillY, pillW, pillH, 16);
       ctx.fill();
       ctx.stroke();
       ctx.fillStyle = pillColor;
-      ctx.font = "bold 12px system-ui";
+      ctx.font = "bold 11px system-ui";
       ctx.textAlign = "center";
       ctx.fillText(feedback.text, W / 2, pillY + 21);
     }
@@ -265,9 +289,22 @@ export default function FormAnalysisShowcase() {
       draw(interpolated, currentFrame.feedback);
       setCurrentFeedback(currentFrame.feedback);
 
-      // Count reps (when we complete a full cycle)
+      // Count reps and add per-rep summary to feedback history
       if (frameIndex === SQUAT_FRAMES.length - 1 && t < 0.05) {
-        setRepCount(r => r + 1);
+        repCountRef.current += 1;
+        const newRep = repCountRef.current;
+        setRepCount(newRep);
+
+        const summaryIndex = (newRep - 1) % REP_SUMMARIES.length;
+        const summary = REP_SUMMARIES[summaryIndex];
+        const mins = Math.floor(sessionSecondsRef.current / 60);
+        const secs = sessionSecondsRef.current % 60;
+        const timeStr = `${mins}:${secs.toString().padStart(2, "0")}`;
+
+        setFeedbackHistory(prev => [
+          { type: summary.type, message: summary.message, time: timeStr },
+          ...prev,
+        ].slice(0, 12));
       }
 
       animRef.current = requestAnimationFrame(animate);
@@ -285,43 +322,43 @@ export default function FormAnalysisShowcase() {
 
   return (
     <section className="py-24 bg-gradient-to-br from-gray-950 via-blue-950 to-gray-900 overflow-hidden relative">
-      {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-green-500/5 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-teal-500/5 rounded-full blur-3xl" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Header */}
         <div className="text-center mb-16">
-          <span className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-semibold px-4 py-2 rounded-full mb-6">
-            <span className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
+          <span className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/20 text-green-400 text-sm font-semibold px-4 py-2 rounded-full mb-6">
+            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
             AI Form Analysis — Live Demo
           </span>
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Your AI spotter{" "}
-            <span className="bg-gradient-to-r from-blue-400 to-teal-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-green-400 to-teal-400 bg-clip-text text-transparent">
               never blinks.
             </span>
           </h2>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Real-time joint tracking catches form errors before they cause injury.
+            Real-time pose tracking catches form errors before they cause injury.
             Most apps count reps. YFIT coaches every single one.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Canvas demo */}
-          <div className="relative">
-            <div className="bg-gray-900/80 border border-blue-500/20 rounded-2xl overflow-hidden shadow-2xl shadow-blue-500/10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+          {/* Left — canvas + feedback history */}
+          <div className="space-y-4">
+            {/* Canvas panel */}
+            <div className="bg-gray-900/80 border border-green-500/20 rounded-2xl overflow-hidden shadow-2xl shadow-green-500/10">
               {/* Toolbar */}
-              <div className="flex items-center justify-between px-4 py-3 border-b border-blue-500/10 bg-gray-900/50">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-green-500/10 bg-gray-900/50">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-red-500/70" />
                   <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
                   <div className="w-3 h-3 rounded-full bg-green-500/70" />
                 </div>
-                <span className="text-xs text-gray-500 font-mono">yfit_form_analysis.live</span>
+                <span className="text-xs text-gray-500 font-mono">YFIT AI — Form Analysis</span>
                 <div className="flex items-center gap-1">
                   <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
                   <span className="text-xs text-green-400">LIVE</span>
@@ -331,13 +368,13 @@ export default function FormAnalysisShowcase() {
               <canvas
                 ref={canvasRef}
                 width={400}
-                height={480}
+                height={420}
                 className="w-full"
                 style={{ background: "transparent" }}
               />
 
               {/* Stats bar */}
-              <div className="flex items-center justify-between px-6 py-4 border-t border-blue-500/10 bg-gray-900/50">
+              <div className="flex items-center justify-between px-6 py-4 border-t border-green-500/10 bg-gray-900/50">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-white">{repCount}</div>
                   <div className="text-xs text-gray-500">Reps</div>
@@ -349,16 +386,16 @@ export default function FormAnalysisShowcase() {
                   <div className="text-xs text-gray-500">Form Score</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-white">14</div>
-                  <div className="text-xs text-gray-500">Joints Tracked</div>
+                  <div className="text-2xl font-bold text-white">10</div>
+                  <div className="text-xs text-gray-500">Exercises</div>
                 </div>
                 <button
                   onClick={() => setIsPlaying(p => !p)}
                   className="px-4 py-2 rounded-lg text-xs font-semibold border transition-all"
                   style={{
-                    borderColor: "rgba(59,130,246,0.3)",
-                    color: isPlaying ? "#f59e0b" : "#10b981",
-                    background: "rgba(59,130,246,0.05)"
+                    borderColor: "rgba(34,197,94,0.3)",
+                    color: isPlaying ? "#f59e0b" : "#22c55e",
+                    background: "rgba(34,197,94,0.05)"
                   }}
                 >
                   {isPlaying ? "⏸ Pause" : "▶ Play"}
@@ -366,44 +403,63 @@ export default function FormAnalysisShowcase() {
               </div>
             </div>
 
-            {/* Floating feedback card */}
-            <div
-              className="absolute -right-4 top-1/3 bg-gray-900 border rounded-xl px-4 py-3 shadow-xl hidden lg:block"
-              style={{ borderColor: currentFeedback.color + "44" }}
-            >
-              <div className="text-xs text-gray-500 mb-1">AI Feedback</div>
-              <div className="text-sm font-semibold" style={{ color: currentFeedback.color }}>
-                {currentFeedback.text}
+            {/* Feedback history panel — matches the real app UI */}
+            <div className="bg-gray-900/80 border border-green-500/20 rounded-2xl overflow-hidden shadow-xl">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-green-500/10">
+                <span className="text-xs text-gray-400 font-semibold uppercase tracking-wider">Rep Feedback</span>
+                <button
+                  onClick={() => setFeedbackHistory([{ type: "success", message: "Session started — Bodyweight Squat selected", time: "0:00" }])}
+                  className="text-xs text-gray-600 hover:text-gray-400 transition-colors"
+                >
+                  Clear
+                </button>
+              </div>
+              <div className="h-40 overflow-y-auto px-4 py-3 space-y-2">
+                {feedbackHistory.map((entry, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <span className="text-xs text-gray-600 font-mono w-8 flex-shrink-0 pt-0.5">{entry.time}</span>
+                    <div
+                      className="flex-1 text-xs px-3 py-1.5 rounded-lg"
+                      style={{
+                        background: entry.type === "success" ? "rgba(34,197,94,0.08)" : entry.type === "warning" ? "rgba(245,158,11,0.08)" : "rgba(239,68,68,0.08)",
+                        color: entry.type === "success" ? "#86efac" : entry.type === "warning" ? "#fcd34d" : "#fca5a5",
+                        border: `1px solid ${entry.type === "success" ? "rgba(34,197,94,0.2)" : entry.type === "warning" ? "rgba(245,158,11,0.2)" : "rgba(239,68,68,0.2)"}`,
+                      }}
+                    >
+                      {entry.message}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
 
-          {/* Feature list */}
-          <div className="space-y-8">
+          {/* Right — feature list */}
+          <div className="space-y-8 lg:pt-4">
             {[
               {
-                icon: "🦴",
-                title: "14-Point Joint Tracking",
-                desc: "Every major joint tracked in real time — shoulders, elbows, hips, knees, and ankles. The AI knows your body better than a mirror.",
-                color: "#60a5fa",
+                icon: "🎯",
+                title: "10 Exercises Supported",
+                desc: "Squat, push-up, plank, sit-up, deadlift, bench press, lateral raise, preacher curl, bicep curl, and bent-over row — all analysed in real time using your device camera.",
+                color: "#22c55e",
               },
               {
-                icon: "🎯",
-                title: "Instant Form Corrections",
-                desc: "Audio and visual cues fire within milliseconds of a form break. No more finishing a set with bad technique and wondering why your knees hurt.",
+                icon: "⚡",
+                title: "Real-Time Form Corrections",
+                desc: "Feedback fires every frame — 'Go deeper', 'Keep chest up', 'Knees too far forward'. You correct the issue before the rep is even finished.",
                 color: "#f59e0b",
               },
               {
-                icon: "📊",
-                title: "Per-Rep Form Reports",
-                desc: "After every set, get a breakdown of your best and worst reps with specific joint angle data. Track your form improvement over weeks.",
+                icon: "📋",
+                title: "Per-Rep Feedback History",
+                desc: "Every rep gets a summary — the worst issue or a 'Good squat!' if your form was clean. Scroll back through your session to see exactly where you improved.",
                 color: "#a78bfa",
               },
               {
                 icon: "🛡️",
-                title: "Injury Prevention Insights",
-                desc: "Patterns that lead to injury — like knee cave or forward lean — are flagged before they become chronic problems.",
-                color: "#10b981",
+                title: "Injury Prevention",
+                desc: "Patterns that lead to injury — knee cave, forward lean, hip drop — are flagged before they become chronic problems. Your joints will thank you.",
+                color: "#38bdf8",
               },
             ].map((item) => (
               <div key={item.title} className="flex gap-4">
@@ -420,17 +476,29 @@ export default function FormAnalysisShowcase() {
               </div>
             ))}
 
-            <div className="pt-4">
+            {/* Exercise chips */}
+            <div className="pt-2">
+              <p className="text-xs text-gray-600 uppercase tracking-wider mb-3">Supported exercises</p>
+              <div className="flex flex-wrap gap-2">
+                {["Squat", "Push-Up", "Plank", "Sit-Up", "Deadlift", "Bench Press", "Lateral Raise", "Preacher Curl", "Bicep Curl", "Bent-Over Row"].map(ex => (
+                  <span key={ex} className="text-xs px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400">
+                    {ex}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-2">
               <a
                 href="https://app.yfitai.com"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-teal-500 text-white font-semibold px-8 py-4 rounded-xl hover:opacity-90 transition-opacity shadow-lg shadow-blue-500/25"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-green-500 to-teal-500 text-white font-semibold px-8 py-4 rounded-xl hover:opacity-90 transition-opacity shadow-lg shadow-green-500/25"
               >
                 Try Form Analysis Free
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </a>
-              <p className="text-xs text-gray-600 mt-3">3 free sessions/month on the Starter plan</p>
+              <p className="text-xs text-gray-600 mt-3">3 free sessions/month on the Free plan</p>
             </div>
           </div>
         </div>

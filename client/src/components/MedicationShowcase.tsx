@@ -146,12 +146,12 @@ export default function MedicationShowcase() {
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-white/70 text-xs font-medium uppercase tracking-wider mb-1">YFIT AI — Provider Report</div>
-                  <div className="text-white font-bold text-lg">Don Campbell</div>
+                  <div className="text-white font-bold text-lg">John Smith</div>
                   <div className="text-white/70 text-sm">Generated April 3, 2026</div>
                 </div>
                 <div className="text-right">
                   <div className="text-white/70 text-xs mb-1">Shared with</div>
-                  <div className="text-white font-semibold text-sm">Dr. Sarah Mitchell</div>
+                  <div className="text-white font-semibold text-sm">Dr. Emily Carter</div>
                   <div className="text-white/70 text-xs">Family Medicine</div>
                 </div>
               </div>
