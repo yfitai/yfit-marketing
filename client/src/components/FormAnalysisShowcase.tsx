@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 // Skeleton joint positions for a squat exercise (normalized 0-1 coordinates)
 const SQUAT_FRAMES = [
@@ -76,7 +76,6 @@ const SQUAT_FRAMES = [
   },
 ];
 
-// Per-rep summary messages matching the real app
 const REP_SUMMARIES = [
   { type: "warning", message: "Rep 1 — Go deeper: aim for thighs parallel to ground" },
   { type: "success", message: "Rep 2 — Good squat! Keep chest up on descent" },
@@ -116,169 +115,144 @@ type FeedbackEntry = { type: string; message: string; time: string };
 
 export default function FormAnalysisShowcase() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animRef = useRef<number>(0);
+  const rafRef = useRef<number>(0);
+  const isPlayingRef = useRef(true);
   const timeRef = useRef(0);
+  const lastTimeRef = useRef(0);
+  const repCountRef = useRef(0);
+  const sessionSecondsRef = useRef(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
   const [currentFeedback, setCurrentFeedback] = useState(SQUAT_FRAMES[0].feedback);
   const [repCount, setRepCount] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [feedbackHistory, setFeedbackHistory] = useState<FeedbackEntry[]>([
     { type: "success", message: "Session started — Bodyweight Squat selected", time: "0:00" },
   ]);
-  const repCountRef = useRef(0);
-  const sessionSecondsRef = useRef(0);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Session timer
-  useEffect(() => {
-    if (isPlaying) {
-      timerRef.current = setInterval(() => {
-        sessionSecondsRef.current += 1;
-      }, 1000);
-    } else {
-      if (timerRef.current) clearInterval(timerRef.current);
+  const drawFrame = useCallback((canvas: HTMLCanvasElement, joints: Record<string, number[]>, feedback: typeof SQUAT_FRAMES[0]["feedback"]) => {
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    const W = canvas.width;
+    const H = canvas.height;
+
+    ctx.clearRect(0, 0, W, H);
+
+    // Dark navy background — always visible
+    ctx.fillStyle = "#0f172a";
+    ctx.fillRect(0, 0, W, H);
+
+    // Background grid
+    ctx.strokeStyle = "rgba(34,197,94,0.07)";
+    ctx.lineWidth = 1;
+    for (let x = 0; x < W; x += 40) {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
     }
-    return () => { if (timerRef.current) clearInterval(timerRef.current); };
-  }, [isPlaying]);
+    for (let y = 0; y < H; y += 40) {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+    }
 
+    // Floor line
+    ctx.strokeStyle = "rgba(34,197,94,0.3)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(W * 0.1, H * 0.92);
+    ctx.lineTo(W * 0.9, H * 0.92);
+    ctx.stroke();
+
+    // Score arc
+    const score = feedback.score;
+    const scoreColor = score >= 90 ? "#22c55e" : score >= 75 ? "#f59e0b" : "#ef4444";
+    ctx.strokeStyle = "rgba(255,255,255,0.1)";
+    ctx.lineWidth = 8;
+    ctx.beginPath();
+    ctx.arc(W * 0.85, H * 0.18, 28, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.strokeStyle = scoreColor;
+    ctx.lineWidth = 8;
+    ctx.beginPath();
+    ctx.arc(W * 0.85, H * 0.18, 28, -Math.PI / 2, -Math.PI / 2 + (Math.PI * 2 * score) / 100);
+    ctx.stroke();
+    ctx.fillStyle = "white";
+    ctx.font = "bold 14px system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(`${score}`, W * 0.85, H * 0.18 + 5);
+
+    // Draw bones — green limbs
+    ctx.shadowColor = "#22c55e";
+    ctx.shadowBlur = 10;
+    ctx.strokeStyle = "#4ade80";
+    ctx.lineWidth = 3;
+    ctx.lineCap = "round";
+    for (const [a, b] of BONES) {
+      const jA = joints[a];
+      const jB = joints[b];
+      if (!jA || !jB) continue;
+      ctx.beginPath();
+      ctx.moveTo(jA[0] * W, jA[1] * H);
+      ctx.lineTo(jB[0] * W, jB[1] * H);
+      ctx.stroke();
+    }
+    ctx.shadowBlur = 0;
+
+    // Draw joints — red
+    for (const [key, pos] of Object.entries(joints)) {
+      const x = pos[0] * W;
+      const y = pos[1] * H;
+      const isLarge = key.includes("Knee") || key.includes("Hip") || key === "head";
+      const radius = isLarge ? 7 : 5;
+
+      ctx.shadowColor = "#ef4444";
+      ctx.shadowBlur = 12;
+      ctx.fillStyle = "#ef4444";
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = "rgba(255,255,255,0.9)";
+      ctx.beginPath();
+      ctx.arc(x, y, radius * 0.38, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Feedback pill
+    const pillColor = feedback.color;
+    const pillW = Math.min(W * 0.82, 240);
+    const pillH = 30;
+    const pillX = (W - pillW) / 2;
+    const pillY = H * 0.03;
+    ctx.fillStyle = pillColor + "25";
+    ctx.strokeStyle = pillColor + "99";
+    ctx.lineWidth = 1.5;
+    ctx.shadowBlur = 0;
+    ctx.beginPath();
+    (ctx as CanvasRenderingContext2D).roundRect(pillX, pillY, pillW, pillH, 15);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = pillColor;
+    ctx.font = "bold 11px system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(feedback.text, W / 2, pillY + 20);
+  }, []);
+
+  // Main animation loop — uses refs only, no closure variables
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
 
     const FRAME_DURATION = 600;
     const TOTAL_DURATION = SQUAT_FRAMES.length * FRAME_DURATION;
 
-    let lastTime = performance.now();
-    let paused = false;
-
-    function draw(joints: Record<string, number[]>, feedback: typeof SQUAT_FRAMES[0]["feedback"]) {
-      if (!canvas || !ctx) return;
-      const W = canvas.width;
-      const H = canvas.height;
-
-      ctx.clearRect(0, 0, W, H);
-
-      // Background fill — dark navy so skeleton is always visible
-      ctx.fillStyle = "#0f172a";
-      ctx.fillRect(0, 0, W, H);
-
-      // Background grid
-      ctx.strokeStyle = "rgba(34,197,94,0.06)";
-      ctx.lineWidth = 1;
-      for (let x = 0; x < W; x += 40) {
-        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
-      }
-      for (let y = 0; y < H; y += 40) {
-        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
-      }
-
-      // Floor line
-      ctx.strokeStyle = "rgba(34,197,94,0.25)";
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(W * 0.1, H * 0.92);
-      ctx.lineTo(W * 0.9, H * 0.92);
-      ctx.stroke();
-
-      // Score arc
-      const score = feedback.score;
-      const scoreColor = score >= 90 ? "#22c55e" : score >= 75 ? "#f59e0b" : "#ef4444";
-      ctx.strokeStyle = "rgba(255,255,255,0.08)";
-      ctx.lineWidth = 8;
-      ctx.beginPath();
-      ctx.arc(W * 0.85, H * 0.18, 28, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.strokeStyle = scoreColor;
-      ctx.lineWidth = 8;
-      ctx.beginPath();
-      ctx.arc(W * 0.85, H * 0.18, 28, -Math.PI / 2, -Math.PI / 2 + (Math.PI * 2 * score) / 100);
-      ctx.stroke();
-      ctx.fillStyle = "white";
-      ctx.font = "bold 14px system-ui";
-      ctx.textAlign = "center";
-      ctx.fillText(`${score}`, W * 0.85, H * 0.18 + 5);
-
-      // Draw bones — green limbs (matching app #00FF00 → #22c55e)
-      for (const [a, b] of BONES) {
-        const jA = joints[a];
-        const jB = joints[b];
-        if (!jA || !jB) continue;
-        const x1 = jA[0] * W;
-        const y1 = jA[1] * H;
-        const x2 = jB[0] * W;
-        const y2 = jB[1] * H;
-
-        ctx.shadowColor = "#22c55e";
-        ctx.shadowBlur = 10;
-        ctx.strokeStyle = "rgba(34,197,94,0.55)";
-        ctx.lineWidth = 4;
-        ctx.lineCap = "round";
-        ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        ctx.stroke();
-
-        ctx.shadowBlur = 0;
-        ctx.strokeStyle = "#86efac";
-        ctx.lineWidth = 2.5;
-        ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        ctx.stroke();
-      }
-
-      // Draw joints — red (matching app #FF0000 → #ef4444)
-      for (const [key, pos] of Object.entries(joints)) {
-        const x = pos[0] * W;
-        const y = pos[1] * H;
-        const isKnee = key.includes("Knee");
-        const isHip = key.includes("Hip");
-        const isShoulder = key.includes("Shoulder");
-        const isElbow = key.includes("Elbow");
-        const isAnkle = key.includes("Ankle");
-        const isJoint = isKnee || isHip || isShoulder || isElbow || isAnkle;
-        const radius = isKnee || isHip ? 7 : key === "head" ? 10 : isJoint ? 6 : 5;
-        const color = "#ef4444"; // All joints red — matches app
-
-        ctx.shadowColor = color;
-        ctx.shadowBlur = 14;
-        ctx.fillStyle = color;
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.shadowBlur = 0;
-        ctx.fillStyle = "white";
-        ctx.beginPath();
-        ctx.arc(x, y, radius * 0.4, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      // Feedback pill
-      const pillColor = feedback.color;
-      ctx.fillStyle = pillColor + "22";
-      ctx.strokeStyle = pillColor;
-      ctx.lineWidth = 1.5;
-      ctx.shadowBlur = 0;
-      const pillW = 220;
-      const pillH = 32;
-      const pillX = (W - pillW) / 2;
-      const pillY = H * 0.04;
-      ctx.beginPath();
-      (ctx as CanvasRenderingContext2D).roundRect(pillX, pillY, pillW, pillH, 16);
-      ctx.fill();
-      ctx.stroke();
-      ctx.fillStyle = pillColor;
-      ctx.font = "bold 11px system-ui";
-      ctx.textAlign = "center";
-      ctx.fillText(feedback.text, W / 2, pillY + 21);
-    }
+    lastTimeRef.current = performance.now();
 
     function animate(now: number) {
-      if (paused) return;
-      const delta = now - lastTime;
-      lastTime = now;
+      if (!isPlayingRef.current) return;
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+
+      const delta = Math.min(now - lastTimeRef.current, 100); // cap delta to avoid jumps
+      lastTimeRef.current = now;
       timeRef.current = (timeRef.current + delta) % TOTAL_DURATION;
 
       const rawFrame = timeRef.current / FRAME_DURATION;
@@ -290,10 +264,10 @@ export default function FormAnalysisShowcase() {
       const nextFrame = SQUAT_FRAMES[nextIndex];
       const interpolated = lerpJoints(currentFrame.joints, nextFrame.joints, t);
 
-      draw(interpolated, currentFrame.feedback);
+      drawFrame(canvas, interpolated, currentFrame.feedback);
       setCurrentFeedback(currentFrame.feedback);
 
-      // Count reps and add per-rep summary to feedback history
+      // Count reps at the last frame transition
       if (frameIndex === SQUAT_FRAMES.length - 1 && t < 0.05) {
         repCountRef.current += 1;
         const newRep = repCountRef.current;
@@ -311,18 +285,85 @@ export default function FormAnalysisShowcase() {
         ].slice(0, 12));
       }
 
-      animRef.current = requestAnimationFrame(animate);
+      rafRef.current = requestAnimationFrame(animate);
     }
 
-    if (isPlaying) {
-      animRef.current = requestAnimationFrame(animate);
+    // Draw first frame immediately so canvas is never blank
+    const firstFrame = SQUAT_FRAMES[0];
+    drawFrame(canvas, firstFrame.joints, firstFrame.feedback);
+
+    if (isPlayingRef.current) {
+      rafRef.current = requestAnimationFrame(animate);
     }
 
     return () => {
-      paused = true;
-      cancelAnimationFrame(animRef.current);
+      cancelAnimationFrame(rafRef.current);
     };
+  }, [drawFrame]);
+
+  // Session timer
+  useEffect(() => {
+    if (isPlaying) {
+      timerRef.current = setInterval(() => {
+        sessionSecondsRef.current += 1;
+      }, 1000);
+    } else {
+      if (timerRef.current) clearInterval(timerRef.current);
+    }
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [isPlaying]);
+
+  const handlePlayPause = useCallback(() => {
+    setIsPlaying(prev => {
+      const next = !prev;
+      isPlayingRef.current = next;
+      if (next) {
+        // Restart animation loop
+        const canvas = canvasRef.current;
+        if (!canvas) return next;
+        lastTimeRef.current = performance.now();
+        const FRAME_DURATION = 600;
+        const TOTAL_DURATION = SQUAT_FRAMES.length * FRAME_DURATION;
+
+        const animate = (now: number) => {
+          if (!isPlayingRef.current) return;
+          const canvas = canvasRef.current;
+          if (!canvas) return;
+          const delta = Math.min(now - lastTimeRef.current, 100);
+          lastTimeRef.current = now;
+          timeRef.current = (timeRef.current + delta) % TOTAL_DURATION;
+          const rawFrame = timeRef.current / FRAME_DURATION;
+          const frameIndex = Math.floor(rawFrame) % SQUAT_FRAMES.length;
+          const nextIndex = (frameIndex + 1) % SQUAT_FRAMES.length;
+          const t = rawFrame - Math.floor(rawFrame);
+          const currentFrame = SQUAT_FRAMES[frameIndex];
+          const nextFrame = SQUAT_FRAMES[nextIndex];
+          const interpolated = lerpJoints(currentFrame.joints, nextFrame.joints, t);
+          drawFrame(canvas, interpolated, currentFrame.feedback);
+          setCurrentFeedback(currentFrame.feedback);
+          if (frameIndex === SQUAT_FRAMES.length - 1 && t < 0.05) {
+            repCountRef.current += 1;
+            const newRep = repCountRef.current;
+            setRepCount(newRep);
+            const summaryIndex = (newRep - 1) % REP_SUMMARIES.length;
+            const summary = REP_SUMMARIES[summaryIndex];
+            const mins = Math.floor(sessionSecondsRef.current / 60);
+            const secs = sessionSecondsRef.current % 60;
+            setFeedbackHistory(p => [
+              { type: summary.type, message: summary.message, time: `${mins}:${secs.toString().padStart(2, "0")}` },
+              ...p,
+            ].slice(0, 12));
+          }
+          rafRef.current = requestAnimationFrame(animate);
+        };
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = requestAnimationFrame(animate);
+      } else {
+        cancelAnimationFrame(rafRef.current);
+      }
+      return next;
+    });
+  }, [drawFrame]);
 
   return (
     <section className="py-24 bg-gradient-to-br from-gray-950 via-blue-950 to-gray-900 overflow-hidden relative">
@@ -373,8 +414,7 @@ export default function FormAnalysisShowcase() {
                 ref={canvasRef}
                 width={400}
                 height={420}
-                className="w-full"
-                style={{ background: "transparent" }}
+                className="w-full block"
               />
 
               {/* Stats bar */}
@@ -394,7 +434,7 @@ export default function FormAnalysisShowcase() {
                   <div className="text-xs text-gray-500">Exercises</div>
                 </div>
                 <button
-                  onClick={() => setIsPlaying(p => !p)}
+                  onClick={handlePlayPause}
                   className="px-4 py-2 rounded-lg text-xs font-semibold border transition-all"
                   style={{
                     borderColor: "rgba(34,197,94,0.3)",
@@ -407,7 +447,7 @@ export default function FormAnalysisShowcase() {
               </div>
             </div>
 
-            {/* Feedback history panel — matches the real app UI */}
+            {/* Feedback history panel */}
             <div className="bg-gray-900/80 border border-green-500/20 rounded-2xl overflow-hidden shadow-xl">
               <div className="flex items-center justify-between px-4 py-3 border-b border-green-500/10">
                 <span className="text-xs text-gray-400 font-semibold uppercase tracking-wider">Rep Feedback</span>
