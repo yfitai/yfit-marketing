@@ -253,14 +253,14 @@ export default function Home() {
             <div className="space-y-8">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-600/10 border border-green-600/20 text-green-700 text-sm font-medium">
                 <Zap className="w-4 h-4" />
-                <span>The only fitness app that knows about your medications</span>
+                <span>The only all in one health and fitness app that tracks everything</span>
               </div>
               <h1 className="text-4xl lg:text-6xl font-bold leading-tight text-foreground">
-                Finally, a fitness app that knows about your{" "}
-                <span className="bg-gradient-to-r from-green-600 to-teal-600 bg-clip-text text-transparent">medications.</span>
+                Finally, a health and fitness app that tracks your medications and{" "}
+                <span className="bg-gradient-to-r from-green-600 to-teal-600 bg-clip-text text-transparent">analyses your exercises.</span>
               </h1>
               <p className="text-xl text-muted-foreground max-w-lg leading-relaxed">
-                YFIT AI combines AI coaching, nutrition tracking, and medication-aware workout plans — all in one app. Built for the <strong>66% of adults</strong> who take at least one prescription medication.
+                YFIT AI is a hybrid, human and AI app that combines AI coaching, nutrition tracking, and medication-aware workout plans — all in one app. Built to help busy people who want an all in one plan for improved health.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button onClick={goToSignUp} size="lg" className="text-lg px-8 bg-gradient-to-r from-green-600 to-teal-600 hover:opacity-90 text-white shadow-lg">

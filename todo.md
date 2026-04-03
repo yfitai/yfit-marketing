@@ -170,4 +170,7 @@
 - [x] Confirm legally compliant wording for in-app button directing users to yfitai.com
 - [x] Fix Android banner button URL — point to app.yfitai.com/signup instead of yfitai.com homepage
 - [x] Change Android banner button back to yfitai.com/#pricing and ensure anchor scroll works
-- [ ] Fix Android banner button — replace external href with onClick smooth scroll to #pricing section
+- [x] Fix Android banner button — replace external href with onClick smooth scroll to #pricing section
+- [ ] Update hero green badge text to "The only all in one health and fitness app that tracks everything"
+- [ ] Update hero headline to "Finally, a health and fitness app that tracks your medications and analyses your exercises."
+- [ ] Update hero subtext to new YFIT AI hybrid description
