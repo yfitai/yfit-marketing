@@ -169,4 +169,5 @@
 - [x] Add "Subscribe on the web" banner/section to the marketing site pricing page for Android users
 - [x] Confirm legally compliant wording for in-app button directing users to yfitai.com
 - [x] Fix Android banner button URL — point to app.yfitai.com/signup instead of yfitai.com homepage
-- [ ] Change Android banner button back to yfitai.com/#pricing and ensure anchor scroll works
+- [x] Change Android banner button back to yfitai.com/#pricing and ensure anchor scroll works
+- [ ] Fix Android banner button — replace external href with onClick smooth scroll to #pricing section

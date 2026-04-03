@@ -580,15 +580,13 @@ export default function Home() {
                 <p className="text-green-300 text-xs mt-0.5">Subscribe on our website and pay less — no app store fees added to your plan price.</p>
               </div>
             </div>
-            <a
-              href="https://www.yfitai.com/#pricing"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
               className="flex-shrink-0 inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition-colors shadow-md shadow-green-500/25 whitespace-nowrap"
             >
-              View Plans at yfitai.com
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-            </a>
+              View Plans
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
+            </button>
           </div>
         </div>
       </section>
