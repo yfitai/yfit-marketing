@@ -166,5 +166,6 @@
 - [x] Fix play/pause — resuming should continue from current position, not restart from frame 0
 
 ## Apr 3 2026 — Web Subscribe CTA (Android app redirect strategy)
-- [ ] Add "Subscribe on the web" banner/section to the marketing site pricing page for Android users
-- [ ] Confirm legally compliant wording for in-app button directing users to yfitai.com
+- [x] Add "Subscribe on the web" banner/section to the marketing site pricing page for Android users
+- [x] Confirm legally compliant wording for in-app button directing users to yfitai.com
+- [ ] Fix Android banner button URL — point to app.yfitai.com/signup instead of yfitai.com homepage
