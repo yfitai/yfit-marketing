@@ -144,3 +144,27 @@
 - [x] Build mock provider report medication showcase component (MedicationShowcase.tsx)
 - [x] Integrate both showcase sections into Home.tsx between hero and feature grid
 - [x] Push to GitHub
+
+## Apr 3 2026 — Showcase Refinements
+- [x] Replace "Don Campbell" / "Dr. Sarah Mitchell" with "John Smith" / "Dr. Emily Carter" in MedicationShowcase.tsx
+- [x] Update FormAnalysisShowcase colours: green for limbs, red for joints (match actual app)
+- [x] Compare app form analysis code vs website demo and produce upgrade recommendation
+- [x] Update FormAnalysisShowcase: add feedback history panel (green/yellow/red, scrollable, newest first)
+- [x] Update FormAnalysisShowcase: change copy from "14 joints tracked" to "10 exercises supported"
+- [x] Update FormAnalysisShowcase: add per-rep summary messages matching real app (e.g. "Go deeper — thighs parallel")
+- [x] Update FormAnalysisShowcase: add form score arc gauge (not in app yet, but aspirational feature)
+- [x] Fix MedicationShowcase footer text — remove inaccurate "90 days workout history and AI-detected interactions" claim
+- [x] Remove all workout references from MedicationShowcase — footer text and left sidebar feature callout
+
+## Apr 3 2026 — Bug Fixes
+- [x] Fix black canvas bug in FormAnalysisShowcase (skeleton not rendering)
+- [x] Replace workout notes tab in MedicationShowcase with real drug-drug interaction data
+- [x] Fix RAF closure bug in FormAnalysisShowcase — rewrite animation loop using refs (React strict mode production fix)
+
+## Apr 3 2026 — FormAnalysisShowcase UX Improvements
+- [x] Make exercise chips clickable — each chip switches to a unique animation for that exercise
+- [x] Fix play/pause — resuming should continue from current position, not restart from frame 0
+
+## Apr 3 2026 — Web Subscribe CTA (Android app redirect strategy)
+- [ ] Add "Subscribe on the web" banner/section to the marketing site pricing page for Android users
+- [ ] Confirm legally compliant wording for in-app button directing users to yfitai.com

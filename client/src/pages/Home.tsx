@@ -567,6 +567,32 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Android Web Subscribe Banner */}
+      <section className="py-8 bg-gray-50">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-gradient-to-r from-green-900/90 to-teal-900/90 border border-green-500/30 rounded-2xl px-6 py-5 shadow-lg">
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded-xl bg-green-500/20 border border-green-500/30 flex items-center justify-center flex-shrink-0">
+                <svg className="w-5 h-5 text-green-400" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.341 14.63 12l2.893-3.341A1 1 0 0 0 16.77 7H7.23a1 1 0 0 0-.753 1.659L9.37 12l-2.893 3.341A1 1 0 0 0 7.23 17h9.54a1 1 0 0 0 .753-1.659z"/></svg>
+              </div>
+              <div>
+                <p className="text-white font-semibold text-sm">Using YFIT on Android?</p>
+                <p className="text-green-300 text-xs mt-0.5">Subscribe on our website and pay less — no app store fees added to your plan price.</p>
+              </div>
+            </div>
+            <a
+              href="https://yfitai.com/#pricing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-shrink-0 inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition-colors shadow-md shadow-green-500/25 whitespace-nowrap"
+            >
+              Subscribe at yfitai.com
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* Feature Comparison Table */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 lg:px-6">
