@@ -39,10 +39,31 @@ const MEDICATIONS = [
   },
 ];
 
-const WORKOUT_NOTES = [
-  { date: "Apr 1", workout: "Strength Training", duration: "52 min", heartRate: "142 bpm", note: "BP meds taken 3hrs prior — session normal" },
-  { date: "Mar 29", workout: "HIIT Cardio", duration: "28 min", heartRate: "168 bpm", note: "Flagged: Lisinopril taken 90min prior" },
-  { date: "Mar 27", workout: "Yoga / Mobility", duration: "45 min", heartRate: "98 bpm", note: "All meds compliant — low intensity" },
+const DRUG_INTERACTIONS = [
+  {
+    drugs: "Metformin + Atorvastatin",
+    severity: "low",
+    label: "Low Risk",
+    detail: "Statins may slightly increase blood glucose. Monitor levels if starting Atorvastatin alongside Metformin.",
+  },
+  {
+    drugs: "Lisinopril + Intense Exercise",
+    severity: "moderate",
+    label: "Caution",
+    detail: "ACE inhibitors can cause blood pressure to drop sharply during high-intensity cardio. Avoid HIIT within 2hrs of dose.",
+  },
+  {
+    drugs: "Atorvastatin + High-Intensity Training",
+    severity: "moderate",
+    label: "Caution",
+    detail: "Statins can amplify exercise-induced muscle soreness (myopathy risk). Reduce intensity if unusual soreness occurs.",
+  },
+  {
+    drugs: "Vitamin D3 + Metformin",
+    severity: "none",
+    label: "No Interaction",
+    detail: "No known interaction. Vitamin D3 supplementation is generally safe alongside Metformin.",
+  },
 ];
 
 export default function MedicationShowcase() {
@@ -217,25 +238,28 @@ export default function MedicationShowcase() {
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {WORKOUT_NOTES.map((note) => (
-                    <div key={note.date} className="rounded-xl border border-gray-100 p-4 bg-gray-50/50">
+                  {DRUG_INTERACTIONS.map((item) => (
+                    <div
+                      key={item.drugs}
+                      className="rounded-xl border p-4"
+                      style={{
+                        borderColor: item.severity === "moderate" ? "#fde68a" : item.severity === "low" ? "#bfdbfe" : "#d1fae5",
+                        background: item.severity === "moderate" ? "#fffbeb" : item.severity === "low" ? "#eff6ff" : "#f0fdf4",
+                      }}
+                    >
                       <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-bold text-gray-500">{note.date}</span>
-                          <span className="text-sm font-semibold text-gray-800">{note.workout}</span>
-                        </div>
-                        <div className="flex items-center gap-3 text-xs text-gray-500">
-                          <span>⏱ {note.duration}</span>
-                          <span>❤️ {note.heartRate}</span>
-                        </div>
+                        <span className="text-sm font-semibold text-gray-900">{item.drugs}</span>
+                        <span
+                          className="text-xs font-bold px-2 py-0.5 rounded-full"
+                          style={{
+                            background: item.severity === "moderate" ? "#fef3c7" : item.severity === "low" ? "#dbeafe" : "#dcfce7",
+                            color: item.severity === "moderate" ? "#92400e" : item.severity === "low" ? "#1e40af" : "#166534",
+                          }}
+                        >
+                          {item.label}
+                        </span>
                       </div>
-                      <div className={`text-xs px-3 py-1.5 rounded-lg ${
-                        note.note.includes("Flagged")
-                          ? "bg-amber-50 text-amber-700 border border-amber-200"
-                          : "bg-green-50 text-green-700 border border-green-200"
-                      }`}>
-                        {note.note}
-                      </div>
+                      <p className="text-xs text-gray-600 leading-relaxed">{item.detail}</p>
                     </div>
                   ))}
                 </div>

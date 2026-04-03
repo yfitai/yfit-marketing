@@ -159,6 +159,10 @@ export default function FormAnalysisShowcase() {
 
       ctx.clearRect(0, 0, W, H);
 
+      // Background fill — dark navy so skeleton is always visible
+      ctx.fillStyle = "#0f172a";
+      ctx.fillRect(0, 0, W, H);
+
       // Background grid
       ctx.strokeStyle = "rgba(34,197,94,0.06)";
       ctx.lineWidth = 1;
