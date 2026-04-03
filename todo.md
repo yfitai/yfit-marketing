@@ -134,7 +134,13 @@
 - [x] Fix FAQ link in auto-reply email to point to yfitai.com/faq (not app.yfitai.com/faq)
 
 ## Mar 31 2026 — Supabase Contact Form Logging
-- [ ] Create contact_submissions table in Supabase (name, email, subject, message, ai_answer, ai_answered, created_at)
-- [ ] Update api/index.ts to log every contact submission and AI reply to Supabase
-- [ ] Add SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY to Vercel env vars
-- [ ] Test end-to-end: submit form → verify record appears in Supabase
+- [x] Create contact_submissions table in Supabase (name, email, subject, message, ai_answer, ai_answered, created_at)
+- [x] Update api/index.ts to log every contact submission and AI reply to Supabase
+- [x] Add SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY to Vercel env vars
+- [x] Test end-to-end: submit form → verify record appears in Supabase
+
+## Apr 3 2026 — Differentiator Showcase Sections
+- [x] Build animated skeleton form analysis showcase component (FormAnalysisShowcase.tsx)
+- [x] Build mock provider report medication showcase component (MedicationShowcase.tsx)
+- [x] Integrate both showcase sections into Home.tsx between hero and feature grid
+- [x] Push to GitHub

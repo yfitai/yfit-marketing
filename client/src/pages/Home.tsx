@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import FormAnalysisShowcase from "@/components/FormAnalysisShowcase";
+import MedicationShowcase from "@/components/MedicationShowcase";
 import { Check, ArrowRight, Activity, Zap, Smartphone, BarChart3, Pill, Eye, Target, Dumbbell, TrendingUp, Apple, Calendar, Brain, Loader2, X, Mail } from "lucide-react";
 import { useLocation } from "wouter";
 import { useStripeCheckout } from "@/hooks/useStripeCheckout";
@@ -358,6 +360,12 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Differentiator Showcase: Form Analysis */}
+      <FormAnalysisShowcase />
+
+      {/* Differentiator Showcase: Medication Tracking */}
+      <MedicationShowcase />
 
       {/* 8 Feature Cards */}
       <section id="features" className="py-20 bg-gray-50">
