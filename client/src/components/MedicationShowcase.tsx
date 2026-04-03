@@ -89,19 +89,19 @@ export default function MedicationShowcase() {
               {
                 icon: "💊",
                 title: "Track Every Medication",
-                desc: "Prescriptions, supplements, vitamins — all in one place. Set reminders so you never miss a dose before a workout.",
+                desc: "Prescriptions, supplements, vitamins — all in one place. Set reminders so you never miss a dose.",
                 color: "#ec4899",
               },
               {
                 icon: "⚡",
-                title: "Workout Interaction Alerts",
-                desc: "YFIT knows that beta-blockers limit heart rate and statins can increase muscle soreness. Your workout plan adapts accordingly.",
+                title: "Drug Interaction Alerts",
+                desc: "YFIT checks your full medication list for known interactions and flags combinations that may affect your health or training.",
                 color: "#a855f7",
               },
               {
                 icon: "📋",
                 title: "Provider Reports",
-                desc: "One tap generates a clean, printable PDF showing your medications, dosages, workout history, and health metrics — ready to hand to your doctor.",
+                desc: "One tap generates a clean, printable PDF showing your medications, dosages, frequencies, and interaction warnings — ready to hand to your doctor.",
                 color: "#3b82f6",
               },
               {
@@ -177,7 +177,7 @@ export default function MedicationShowcase() {
                     : "text-gray-400 hover:text-gray-600"
                 }`}
               >
-                ⚡ Workout Notes
+                ⚡ Interactions
               </button>
             </div>
 
@@ -255,7 +255,7 @@ export default function MedicationShowcase() {
                   opacity: sending ? 0.7 : 1,
                 }}
               >
-                {sent ? "✓ Sent to Dr. Mitchell!" : sending ? "Sending…" : "📧 Send to Provider"}
+                {sent ? "✓ Sent to Dr. Carter!" : sending ? "Sending…" : "📧 Send to Provider"}
               </button>
               <button className="px-4 py-3 rounded-xl text-sm font-semibold text-gray-600 border border-gray-200 hover:bg-gray-50 transition-colors">
                 🖨️ Print PDF
@@ -265,7 +265,7 @@ export default function MedicationShowcase() {
             {/* Footer note */}
             <div className="px-5 pb-4 text-center">
               <p className="text-xs text-gray-400">
-                Report includes 90 days of workout history, all active medications, and AI-detected interactions
+                Report includes all active medications, dosages, frequencies, and AI-detected drug interactions
               </p>
             </div>
           </div>
