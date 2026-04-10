@@ -174,3 +174,21 @@
 - [ ] Update hero green badge text to "The only all in one health and fitness app that tracks everything"
 - [ ] Update hero headline to "Finally, a health and fitness app that tracks your medications and analyses your exercises."
 - [ ] Update hero subtext to new YFIT AI hybrid description
+
+---
+
+## ⚠️ CRITICAL DEPLOYMENT RULE — READ EVERY SESSION
+
+**ALL marketing website changes go to THIS repo (`yfit-marketing-official` → yfitai.com via Vercel)**
+
+- yfitai.com = THE LIVE REAL WEBSITE (this repo, Vercel-deployed)
+- The Manus project (`/home/ubuntu/yfit-marketing/`) = DORMANT redesign, cannot be published, DO NOT push marketing changes there
+- See `/home/ubuntu/YFIT_WEBSITE_ARCHITECTURE.md` for full architecture reference
+
+---
+
+## Apr 10 2026 — Social Media & Pinterest
+- [ ] Pinterest domain verification: push meta tag to GitHub, then click Continue on Pinterest to claim yfitai.com
+- [ ] Pinterest: run test post to verify videos posting to @yfitai
+- [ ] TikTok: reconnect Upload-Post to YFIT AI account (on hold until April 15)
+- [ ] Facebook: connect YFIT AI business page to Upload-Post
