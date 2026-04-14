@@ -3,25 +3,47 @@
  *
  * Provides procedures for the monthly P&L / GST accounting system.
  * Handles CSV uploads, expense management, and report generation.
- * All procedures are protected — only the owner/admin can access them.
+ *
+ * Authentication: PIN-based (ACCOUNTING_ADMIN_PIN env var).
+ * The frontend sends the PIN in a header; the server verifies it.
+ * A valid PIN sets a signed session cookie (8 hours).
  */
 
 import { z } from "zod";
-import { router, protectedProcedure } from "./_core/trpc";
+import { router, publicProcedure } from "./_core/trpc";
 import { TRPCError } from "@trpc/server";
 import { getDb } from "./db";
 import { expenses, csvImportBatches, monthlyReports, stripeIncome } from "../drizzle/schema";
 import { eq, and, gte, lte, desc } from "drizzle-orm";
 import { importCibcCsv, getExpensesForMonth } from "./csvImporter";
 import { syncStripeIncomeForMonth, getStripeIncomeForMonth } from "./stripeSync";
+import {
+  verifyAdminPin,
+  createAccountingSession,
+  verifyAccountingSession,
+  getAccountingCookie,
+  ACCOUNTING_COOKIE,
+  ACCOUNTING_SESSION_DURATION,
+} from "./accountingAuth";
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+// ─── PIN Auth Middleware ───────────────────────────────────────────────────────
 
-function requireOwner(ctx: { user: { role: string } | null }) {
-  if (!ctx.user || ctx.user.role !== "admin") {
-    throw new TRPCError({ code: "FORBIDDEN", message: "Admin access required" });
+/**
+ * Verify the accounting session cookie.
+ * Throws UNAUTHORIZED if not authenticated.
+ */
+async function requireAccountingAuth(ctx: { req: { cookies?: Record<string, string> } }) {
+  const token = getAccountingCookie(ctx.req);
+  if (!token) {
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "Accounting authentication required" });
+  }
+  const valid = await verifyAccountingSession(token);
+  if (!valid) {
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid or expired accounting session" });
   }
 }
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 /**
  * Compute and upsert a monthly report record.
@@ -51,12 +73,10 @@ async function computeMonthlyReport(year: number, month: number) {
     netProfitCadCents,
   };
 
-  // Upsert the monthly report
   const existing = await db
     .select({ id: monthlyReports.id })
     .from(monthlyReports)
-    .where(eq(monthlyReports.period, period))
-    .limit(1);
+    .where(eq(monthlyReports.period, period));
 
   if (existing.length > 0) {
     await db
@@ -79,19 +99,62 @@ async function computeMonthlyReport(year: number, month: number) {
 
 export const accountingRouter = router({
   /**
-   * Upload and import a CIBC CSV file.
-   * Accepts base64-encoded CSV content.
+   * Verify admin PIN and set session cookie.
+   * Returns { success: true } on correct PIN.
    */
-  uploadCsv: protectedProcedure
+  login: publicProcedure
+    .input(z.object({ pin: z.string().min(4) }))
+    .mutation(async ({ input, ctx }) => {
+      const correct = verifyAdminPin(input.pin);
+      if (!correct) {
+        throw new TRPCError({ code: "UNAUTHORIZED", message: "Incorrect PIN" });
+      }
+
+      const token = await createAccountingSession();
+
+      // Set cookie: httpOnly, secure in production, 8 hours
+      ctx.res.cookie(ACCOUNTING_COOKIE, token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: ACCOUNTING_SESSION_DURATION * 1000,
+        path: "/",
+      });
+
+      return { success: true };
+    }),
+
+  /**
+   * Check if the current session is valid.
+   */
+  checkSession: publicProcedure.query(async ({ ctx }) => {
+    const token = getAccountingCookie(ctx.req);
+    if (!token) return { authenticated: false };
+    const valid = await verifyAccountingSession(token);
+    return { authenticated: valid };
+  }),
+
+  /**
+   * Logout — clear the accounting session cookie.
+   */
+  logout: publicProcedure.mutation(({ ctx }) => {
+    ctx.res.clearCookie(ACCOUNTING_COOKIE, { path: "/" });
+    return { success: true };
+  }),
+
+  /**
+   * Upload and import a CIBC CSV file.
+   */
+  uploadCsv: publicProcedure
     .input(
       z.object({
         fileName: z.string(),
-        csvContent: z.string(), // raw CSV text
+        csvContent: z.string(),
         statementMonth: z.string().regex(/^\d{4}-\d{2}$/, "Format: YYYY-MM"),
       })
     )
     .mutation(async ({ input, ctx }) => {
-      requireOwner(ctx);
+      await requireAccountingAuth(ctx);
       const result = await importCibcCsv(input.csvContent, input.fileName, input.statementMonth);
       return result;
     }),
@@ -99,28 +162,28 @@ export const accountingRouter = router({
   /**
    * Sync Stripe income for a given month.
    */
-  syncStripe: protectedProcedure
+  syncStripe: publicProcedure
     .input(z.object({ year: z.number(), month: z.number().min(1).max(12) }))
     .mutation(async ({ input, ctx }) => {
-      requireOwner(ctx);
+      await requireAccountingAuth(ctx);
       return syncStripeIncomeForMonth(input.year, input.month);
     }),
 
   /**
    * Get the full monthly report data (income + expenses + GST summary).
    */
-  getMonthlyReport: protectedProcedure
+  getMonthlyReport: publicProcedure
     .input(z.object({ year: z.number(), month: z.number().min(1).max(12) }))
     .query(async ({ input, ctx }) => {
-      requireOwner(ctx);
+      await requireAccountingAuth(ctx);
       return computeMonthlyReport(input.year, input.month);
     }),
 
   /**
-   * List all monthly reports (for the dashboard overview).
+   * List all monthly reports.
    */
-  listReports: protectedProcedure.query(async ({ ctx }) => {
-    requireOwner(ctx);
+  listReports: publicProcedure.query(async ({ ctx }) => {
+    await requireAccountingAuth(ctx);
     const db = await getDb();
     if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database not available" });
 
@@ -133,17 +196,17 @@ export const accountingRouter = router({
   /**
    * List all expenses for a given month.
    */
-  listExpenses: protectedProcedure
+  listExpenses: publicProcedure
     .input(z.object({ year: z.number(), month: z.number().min(1).max(12) }))
     .query(async ({ input, ctx }) => {
-      requireOwner(ctx);
+      await requireAccountingAuth(ctx);
       return getExpensesForMonth(input.year, input.month);
     }),
 
   /**
    * Update an expense (category, notes, gstEligible, reviewed).
    */
-  updateExpense: protectedProcedure
+  updateExpense: publicProcedure
     .input(
       z.object({
         id: z.number(),
@@ -163,13 +226,12 @@ export const accountingRouter = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      requireOwner(ctx);
+      await requireAccountingAuth(ctx);
       const db = await getDb();
       if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database not available" });
 
       const { id, ...updates } = input;
 
-      // Recalculate GST ITC if gstEligible changes
       const existing = await db
         .select()
         .from(expenses)
@@ -205,10 +267,10 @@ export const accountingRouter = router({
   /**
    * Delete an expense.
    */
-  deleteExpense: protectedProcedure
+  deleteExpense: publicProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ input, ctx }) => {
-      requireOwner(ctx);
+      await requireAccountingAuth(ctx);
       const db = await getDb();
       if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database not available" });
 
@@ -219,8 +281,8 @@ export const accountingRouter = router({
   /**
    * List all CSV import batches.
    */
-  listBatches: protectedProcedure.query(async ({ ctx }) => {
-    requireOwner(ctx);
+  listBatches: publicProcedure.query(async ({ ctx }) => {
+    await requireAccountingAuth(ctx);
     const db = await getDb();
     if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database not available" });
 
@@ -233,14 +295,13 @@ export const accountingRouter = router({
   /**
    * Get year-end summary (all 12 months for a given year).
    */
-  getYearEndSummary: protectedProcedure
+  getYearEndSummary: publicProcedure
     .input(z.object({ year: z.number() }))
     .query(async ({ input, ctx }) => {
-      requireOwner(ctx);
+      await requireAccountingAuth(ctx);
       const db = await getDb();
       if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database not available" });
 
-      const yearPrefix = `${input.year}-`;
       const reports = await db
         .select()
         .from(monthlyReports)
