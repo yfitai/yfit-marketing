@@ -13,6 +13,7 @@ import SignUp from "./pages/SignUp";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import FAQ from "./pages/FAQ";
 import CookieConsent from "./components/CookieConsent";
+import Accounting from "./pages/Accounting";
 
 function Router() {
   return (
@@ -25,6 +26,7 @@ function Router() {
       <Route path={"/signup"} component={SignUp} />
       <Route path={"/payment-success"} component={PaymentSuccess} />
       <Route path={"/faq"} component={FAQ} />
+      <Route path={"/accounting"} component={Accounting} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
