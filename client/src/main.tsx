@@ -14,9 +14,17 @@ const redirectToLoginIfUnauthorized = (error: unknown) => {
   if (!(error instanceof TRPCClientError)) return;
   if (typeof window === "undefined") return;
 
+  // Never redirect on admin/accounting pages — they use PIN auth, not OAuth
+  const isAdminPage = window.location.pathname.startsWith("/accounting");
+  if (isAdminPage) return;
+
   const isUnauthorized = error.message === UNAUTHED_ERR_MSG;
 
   if (!isUnauthorized) return;
+
+  // Only redirect if OAuth is configured (VITE_OAUTH_PORTAL_URL is set)
+  const oauthPortalUrl = import.meta.env.VITE_OAUTH_PORTAL_URL;
+  if (!oauthPortalUrl || oauthPortalUrl === 'undefined') return;
 
   window.location.href = getLoginUrl();
 };
