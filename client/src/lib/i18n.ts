@@ -20,10 +20,6 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    // Load translations from /locales/{lang}/translation.json
-    backend: {
-      loadPath: "/locales/{{lng}}/translation.json",
-    },
     // Language detection order: localStorage → browser language → fallback
     detection: {
       order: ["localStorage", "navigator", "htmlTag"],
@@ -32,9 +28,8 @@ i18n
     },
     fallbackLng: "en",
     supportedLngs: SUPPORTED_LANGUAGES.map((l) => l.code),
-    // Load translations synchronously from bundled resources for instant render
+    // Start with empty resources — filled by fetch() calls below
     resources: {},
-    // Lazy-load from /locales/ directory
     load: "languageOnly",
     ns: ["translation"],
     defaultNS: "translation",
