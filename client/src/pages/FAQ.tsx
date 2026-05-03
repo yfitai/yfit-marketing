@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { ChevronDown, ChevronUp, Search, MessageCircle } from "lucide-react";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 const faqCategories = [
   {
@@ -133,6 +134,7 @@ export default function FAQ() {
             />
           </Link>
           <div className="flex items-center gap-4">
+            <LanguageSwitcher />
             <Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Contact Support
             </Link>

@@ -1,0 +1,256 @@
+{
+  "nav": {
+    "features": "功能",
+    "pricing": "价格",
+    "faq": "常见问题",
+    "contact": "联系我们",
+    "signIn": "登录",
+    "launchApp": "启动应用",
+    "getStarted": "开始使用"
+  },
+  "hero": {
+    "badge": "AI驱动的健身",
+    "headline1": "您的私人",
+    "headline2": "AI健身教练",
+    "subheadline": "使用YFIT AI改变您的健康——智能锻炼计划、实时姿势分析、营养追踪和药物管理。尽在一个应用中。",
+    "ctaPrimary": "免费开始 — 无需信用卡",
+    "ctaSecondary": "查看价格",
+    "socialProof": "加入10,000+用户，改变他们的生活",
+    "limitedOffer": "限时优惠：首月Pro免费"
+  },
+  "features": {
+    "sectionTitle": "您所需的一切",
+    "sectionSubtitle": "八种强大的工具协同工作，助您开启健身之旅",
+    "goals": {
+      "title": "目标",
+      "description": "设定并追踪根据您独特旅程量身定制的个性化健身目标",
+      "items": [
+        "设定个性化健身目标",
+        "追踪身体测量数据",
+        "计算BMI和体脂",
+        "根据进度调整目标"
+      ]
+    },
+    "nutrition": {
+      "title": "营养",
+      "description": "扫描条形码、记录餐食，并通过AI驱动的营养洞察追踪宏量营养素",
+      "items": [
+        "条形码扫描快速记录",
+        "追踪宏量营养素和卡路里",
+        "AI驱动的膳食建议",
+        "营养洞察和报告"
+      ]
+    },
+    "fitness": {
+      "title": "健身",
+      "description": "获取个性化锻炼计划，并进行实时姿势分析和指导",
+      "items": [
+        "个性化锻炼计划",
+        "实时姿势分析",
+        "运动示范",
+        "渐进式超负荷追踪"
+      ]
+    },
+    "dailyTracker": {
+      "title": "日常追踪器",
+      "description": "在一个地方记录您的日常活动、餐食、锻炼和药物",
+      "items": [
+        "记录日常活动",
+        "追踪餐食和锻炼",
+        "监测药物",
+        "每日进度概览"
+      ]
+    },
+    "medications": {
+      "title": "药物",
+      "description": "追踪处方药、补充剂，并为医生就诊生成提供者报告",
+      "items": [
+        "追踪处方药和补充剂",
+        "生成提供者报告",
+        "监测用药时间表",
+        "健康整合"
+      ]
+    },
+    "progress": {
+      "title": "进度",
+      "description": "通过详细的分析和进度照片可视化您的转变",
+      "items": [
+        "可视化进度图表",
+        "身体测量追踪",
+        "进度照片对比",
+        "里程碑庆祝"
+      ]
+    },
+    "predictions": {
+      "title": "预测",
+      "description": "AI驱动的体重、力量和健身里程碑预测",
+      "items": [
+        "AI体重预测",
+        "力量进展预测",
+        "目标时间线估算",
+        "个性化洞察"
+      ]
+    },
+    "aiCoach": {
+      "title": "AI教练",
+      "description": "您的24/7智能健身伴侣，提供个性化指导",
+      "items": [
+        "24/7 AI教练",
+        "个性化锻炼建议",
+        "营养推荐",
+        "激励和支持"
+      ]
+    }
+  },
+  "differentiators": {
+    "sectionTitle": "YFIT AI为何与众不同",
+    "formAnalysis": {
+      "title": "实时姿势分析",
+      "description": "我们的AI摄像头技术实时监测您的动作，在受伤发生前纠正您的姿势。没有其他免费应用能提供这种水平的指导。"
+    },
+    "medicationTracking": {
+      "title": "药物和补充剂追踪",
+      "description": "追踪您的所有药物和补充剂，并提供相互作用警报。为您的医生就诊生成专业的提供者报告。"
+    },
+    "aiPredictions": {
+      "title": "AI进度预测",
+      "description": "预见您的未来。我们的AI根据您的实际数据——而非通用图表——预测您的体重、力量和里程碑日期。"
+    }
+  },
+  "pricing": {
+    "sectionTitle": "选择您的计划",
+    "sectionSubtitle": "免费开始，准备好时再升级。无隐藏费用。随时取消。",
+    "limitedOffer": "限时优惠：首月Pro免费",
+    "mostPopular": "最受欢迎",
+    "bestValue": "最佳价值",
+    "perMonth": "/月",
+    "perYear": "/年",
+    "oneTime": "一次性",
+    "free": {
+      "name": "免费基础版",
+      "description": "非常适合入门",
+      "features": [
+        "基本锻炼追踪",
+        "手动餐食记录",
+        "2个保存的锻炼计划",
+        "基本进度追踪",
+        "体重和身体指标",
+        "每月3次AI姿势分析",
+        "有限的AI教练查询"
+      ],
+      "cta": "免费开始 — 无需信用卡"
+    },
+    "proMonthly": {
+      "name": "Pro月度版",
+      "description": "最灵活的选择",
+      "features": [
+        "包含免费版所有功能",
+        "条形码营养扫描",
+        "AI姿势分析",
+        "药物追踪",
+        "提供者报告",
+        "高级分析",
+        "优先支持"
+      ],
+      "cta": "开始Pro月度版"
+    },
+    "proYearly": {
+      "name": "Pro年度版",
+      "description": "比月度版节省35%",
+      "features": [
+        "包含Pro月度版所有功能",
+        "独家研讨会",
+        "新功能抢先体验",
+        "高级健康洞察"
+      ],
+      "cta": "开始Pro年度版"
+    },
+    "lifetime": {
+      "name": "终身版",
+      "description": "一次付费，永久拥有",
+      "features": [
+        "终身Pro访问权限",
+        "包含所有未来功能",
+        "创始人徽章",
+        "直接联系开发者"
+      ],
+      "cta": "获取终身访问权限"
+    }
+  },
+  "testimonials": {
+    "sectionTitle": "用户评价"
+  },
+  "faqPreview": {
+    "sectionTitle": "常见问题",
+    "viewAll": "查看所有常见问题"
+  },
+  "cta": {
+    "headline": "准备好改变您的健身了吗？",
+    "subheadline": "加入成千上万的用户，他们正在使用YFIT AI实现目标。",
+    "button": "今天免费开始",
+    "noCreditCard": "无需信用卡"
+  },
+  "footer": {
+    "tagline": "您的私人AI健身教练",
+    "product": "产品",
+    "features": "功能",
+    "pricing": "价格",
+    "faq": "常见问题",
+    "support": "支持",
+    "contact": "联系我们",
+    "privacy": "隐私政策",
+    "terms": "服务条款",
+    "copyright": "© 2025 YFIT AI. 保留所有权利。"
+  },
+  "contact": {
+    "title": "联系我们",
+    "subtitle": "有问题吗？我们很乐意听取您的意见。给我们留言，我们会尽快回复。",
+    "name": "您的姓名",
+    "email": "电子邮件地址",
+    "subject": "主题",
+    "message": "消息",
+    "send": "发送消息",
+    "sending": "正在发送...",
+    "successTitle": "消息已发送！",
+    "successMessage": "感谢您的联系。我们将在4-6小时内回复您。",
+    "emailUs": "给我们发邮件",
+    "responseTime": "响应时间",
+    "responseTimeValue": "通常在4-6小时内",
+    "support": "支持",
+    "supportValue": "support@yfitai.com"
+  },
+  "faq": {
+    "title": "常见问题",
+    "subtitle": "关于YFIT AI您需要知道的一切",
+    "categories": {
+      "all": "全部",
+      "general": "通用",
+      "features": "功能",
+      "pricing": "价格",
+      "technical": "技术"
+    },
+    "stillHaveQuestions": "还有问题吗？",
+    "contactSupport": "联系支持"
+  },
+  "notFound": {
+    "title": "页面未找到",
+    "subtitle": "您要查找的页面不存在。",
+    "backHome": "返回首页"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "出错了。请重试。",
+    "learnMore": "了解更多",
+    "getStarted": "开始使用",
+    "viewAll": "查看全部",
+    "close": "关闭",
+    "back": "返回",
+    "next": "下一步",
+    "submit": "提交",
+    "cancel": "取消",
+    "save": "保存",
+    "edit": "编辑",
+    "delete": "删除",
+    "confirm": "确认"
+  }
+}

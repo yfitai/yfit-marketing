@@ -16,14 +16,32 @@ function getPriceIds() {
   };
 }
 
-// ─── AI Auto-Responder ────────────────────────────────────────────────────────
-// Uses OpenAI GPT-4o-mini to generate an instant, personalised answer.
-// Falls back gracefully to the generic acknowledgement if OpenAI is unavailable.
+// ─── Multilingual AI Auto-Responder ─────────────────────────────────────────
+// Uses Manus built-in LLM to detect language and respond in the user's language.
+// Supports: English, French, Spanish, Portuguese, Mandarin, Hindi, German, Japanese.
+// Falls back gracefully to the generic acknowledgement if LLM is unavailable.
 
-const YFIT_SYSTEM_PROMPT = `You are the YFIT AI support assistant. You answer questions about the YFIT AI fitness app in a friendly, helpful, and easy-to-understand way (7th-grade reading level). Keep answers concise — 2-4 short paragraphs maximum.
+const YFIT_MULTILINGUAL_SYSTEM_PROMPT = `You are the YFIT AI customer support assistant. Your job is to read an incoming support email and reply in the EXACT SAME LANGUAGE the user wrote in.
 
-Key facts about YFIT AI:
-- YFIT AI is an AI-powered personal fitness coach app available at app.yfitai.com
+IMPORTANT LANGUAGE RULE:
+- If the email is in French → reply entirely in French
+- If the email is in Spanish → reply entirely in Spanish
+- If the email is in Portuguese → reply entirely in Portuguese
+- If the email is in Mandarin Chinese → reply entirely in Mandarin Chinese
+- If the email is in Hindi → reply entirely in Hindi
+- If the email is in German → reply entirely in German
+- If the email is in Japanese → reply entirely in Japanese
+- If the email is in English or any other language → reply in English
+Never mix languages. Never translate the user's question back to them.
+
+TONE AND STYLE:
+- Friendly, warm, and helpful
+- Easy to understand (7th-grade reading level)
+- Concise: 2–4 short paragraphs maximum
+- Always end with the sign-off in the user's language (e.g., "Stay strong, The YFIT AI Support Team" in English, or the equivalent in their language)
+
+KEY FACTS ABOUT YFIT AI (use these to answer questions):
+- YFIT AI is an AI-powered personal fitness coach app available at app.yfitai.com (pronounced "Why-Fit")
 - Features: AI form analysis (camera-based real-time feedback), personalized workout plans, barcode nutrition scanning, medication tracking with interaction alerts, daily AI coaching, progress predictions
 - Pricing: Free Basic (no card needed), Pro Monthly $12.99/month, Pro Yearly $99.99/year (Best Value, 35% off), Pro Lifetime $249.99 one-time (Most Popular). Limited-time: 1 free month of Pro.
 - No gym or equipment required — works for home, gym, and outdoor workouts
@@ -37,50 +55,126 @@ Key facts about YFIT AI:
 - Website: yfitai.com
 - FAQ: yfitai.com/faq
 
-If the question is outside your knowledge or requires account-specific help, say so kindly and direct them to support@yfitai.com. Never make up information. Always end with "Stay strong, The YFIT AI Support Team".`;
+If the question is outside your knowledge or requires account-specific help, say so kindly in the user's language and direct them to support@yfitai.com. Never make up information.`;
+
+// Detect the language of a message using the LLM
+async function detectLanguage(
+  message: string,
+  forgeApiUrl: string,
+  forgeApiKey: string
+): Promise<string> {
+  try {
+    const response = await fetch(`${forgeApiUrl}/v1/chat/completions`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${forgeApiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "claude-3-5-haiku",
+        max_tokens: 10,
+        temperature: 0,
+        messages: [
+          {
+            role: "user",
+            content: `Detect the language of this text. Reply with ONLY the language name in English (e.g., "English", "French", "Spanish", "Portuguese", "Mandarin", "Hindi", "German", "Japanese"). Text: "${message.slice(0, 200)}"`
+          }
+        ],
+      }),
+    });
+    if (!response.ok) return "English";
+    const data = await response.json() as { choices: Array<{ message: { content: string } }> };
+    return data.choices?.[0]?.message?.content?.trim() || "English";
+  } catch {
+    return "English";
+  }
+}
 
 async function generateAIResponse(
   subject: string,
   message: string,
   name: string
-): Promise<string | null> {
+): Promise<{ answer: string | null; language: string }> {
+  const forgeApiUrl = process.env.BUILT_IN_FORGE_API_URL;
+  const forgeApiKey = process.env.BUILT_IN_FORGE_API_KEY;
+
+  // Fall back to OpenAI if Manus LLM not configured
   const openaiKey = process.env.OPENAI_API_KEY;
-  if (!openaiKey) return null;
+
+  if (!forgeApiUrl && !openaiKey) return { answer: null, language: "English" };
 
   try {
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${openaiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        max_tokens: 400,
-        temperature: 0.5,
-        messages: [
-          { role: "system", content: YFIT_SYSTEM_PROMPT },
-          {
-            role: "user",
-            content: `Hi, my name is ${name}. Subject: ${subject}\n\n${message}`,
-          },
-        ],
-      }),
-    });
+    let answer: string | null = null;
+    let detectedLanguage = "English";
 
-    if (!response.ok) {
-      const errText = await response.text();
-      console.warn(`[AI] OpenAI error (${response.status}): ${errText}`);
-      return null;
+    if (forgeApiUrl && forgeApiKey) {
+      // Detect language first
+      detectedLanguage = await detectLanguage(message, forgeApiUrl, forgeApiKey);
+      console.log(`[AI] Detected language: ${detectedLanguage}`);
+
+      // Generate multilingual response using Manus LLM
+      const response = await fetch(`${forgeApiUrl}/v1/chat/completions`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${forgeApiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "claude-3-5-haiku",
+          max_tokens: 500,
+          temperature: 0.5,
+          messages: [
+            { role: "system", content: YFIT_MULTILINGUAL_SYSTEM_PROMPT },
+            {
+              role: "user",
+              content: `Customer name: ${name}\nSubject: ${subject}\nMessage: ${message}`,
+            },
+          ],
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json() as { choices: Array<{ message: { content: string } }> };
+        answer = data.choices?.[0]?.message?.content?.trim() || null;
+      } else {
+        const errText = await response.text();
+        console.warn(`[AI] Manus LLM error (${response.status}): ${errText}`);
+      }
+    } else if (openaiKey) {
+      // Fallback to OpenAI if Manus LLM not available
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${openaiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "gpt-4o-mini",
+          max_tokens: 500,
+          temperature: 0.5,
+          messages: [
+            { role: "system", content: YFIT_MULTILINGUAL_SYSTEM_PROMPT },
+            {
+              role: "user",
+              content: `Customer name: ${name}\nSubject: ${subject}\nMessage: ${message}`,
+            },
+          ],
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json() as { choices: Array<{ message: { content: string } }> };
+        answer = data.choices?.[0]?.message?.content?.trim() || null;
+      } else {
+        const errText = await response.text();
+        console.warn(`[AI] OpenAI fallback error (${response.status}): ${errText}`);
+      }
     }
 
-    const data = await response.json() as {
-      choices: Array<{ message: { content: string } }>;
-    };
-    return data.choices?.[0]?.message?.content?.trim() || null;
+    return { answer, language: detectedLanguage };
   } catch (err) {
-    console.warn("[AI] OpenAI call failed:", err);
-    return null;
+    console.warn("[AI] LLM call failed:", err);
+    return { answer: null, language: "English" };
   }
 }
 
@@ -352,8 +446,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     try {
       // 1. Attempt AI-generated answer (non-blocking — falls back if unavailable)
-      const aiAnswer = await generateAIResponse(subject, message, name);
+      const { answer: aiAnswer, language: detectedLanguage } = await generateAIResponse(subject, message, name);
       const hasAiAnswer = !!aiAnswer;
+
+      // Language flag emoji for the support notification
+      const languageFlags: Record<string, string> = {
+        "English": "🇺🇸",
+        "French": "🇫🇷",
+        "Spanish": "🇪🇸",
+        "Portuguese": "🇧🇷",
+        "Mandarin": "🇨🇳",
+        "Hindi": "🇮🇳",
+        "German": "🇩🇪",
+        "Japanese": "🇯🇵",
+      };
+      const langFlag = languageFlags[detectedLanguage] || "🌍";
+      const langBadge = `<span style="background:#6366f1;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:bold;">${langFlag} ${detectedLanguage}</span>`;
 
       // 2. Send notification email to support@yfitai.com
       const aiStatusBadge = hasAiAnswer
@@ -365,12 +473,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; padding: 20px;">
             <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 12px; border: 1px solid #e5e7eb; overflow: hidden;">
               <div style="background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%); padding: 24px 30px;">
-                <h2 style="color: white; margin: 0; font-size: 20px;">New Contact Form Submission ${aiStatusBadge}</h2>
+                <h2 style="color: white; margin: 0; font-size: 20px;">New Contact Form Submission ${aiStatusBadge} ${langBadge}</h2>
               </div>
               <div style="padding: 30px;">
                 <table style="width: 100%; border-collapse: collapse;">
                   <tr><td style="padding: 8px 0; font-weight: bold; width: 100px; color: #374151;">From:</td><td style="padding: 8px 0; color: #4b5563;">${name} &lt;${email}&gt;</td></tr>
                   <tr><td style="padding: 8px 0; font-weight: bold; color: #374151;">Subject:</td><td style="padding: 8px 0; color: #4b5563;">${subject}</td></tr>
+                  <tr><td style="padding: 8px 0; font-weight: bold; color: #374151;">Language:</td><td style="padding: 8px 0; color: #4b5563;">${langFlag} ${detectedLanguage}</td></tr>
                 </table>
                 <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 20px 0;" />
                 <h3 style="color: #374151; margin-top: 0;">Message:</h3>
@@ -517,6 +626,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               message,
               ai_answer: aiAnswer || null,
               ai_answered: hasAiAnswer,
+              detected_language: detectedLanguage || "English",
             }),
           });
 
@@ -533,7 +643,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         console.warn("[Contact] Supabase not configured — skipping log");
       }
 
-      console.log(`[Contact] Message from ${email} — AI answered: ${hasAiAnswer}`);
+      console.log(`[Contact] Message from ${email} — Language: ${detectedLanguage} — AI answered: ${hasAiAnswer}`);
+
       return res.json({ success: true, message: "Message sent successfully", aiAnswered: hasAiAnswer });
     } catch (err) {
       console.error("[Contact] Error:", err);

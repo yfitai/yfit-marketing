@@ -1,4 +1,5 @@
 import { trpc } from "@/lib/trpc";
+import "@/lib/i18n"; // Initialize i18n — must be imported before App
 import { UNAUTHED_ERR_MSG } from '@shared/const';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink, TRPCClientError } from "@trpc/client";

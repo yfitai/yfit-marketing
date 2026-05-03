@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, Mail, MessageSquare, Phone } from "lucide-react";
 import { useState, FormEvent, ChangeEvent } from "react";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -61,10 +62,13 @@ export default function Contact() {
           <div className="flex items-center gap-3">
             <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663099417101/YPVUcoNPoLMtiepj.png" alt="YFIT Logo" className="h-10 w-auto" />
           </div>
-          <a href="/" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">
-            <ArrowLeft className="w-4 h-4" />
-            Back to Home
-          </a>
+          <div className="flex items-center gap-3">
+            <LanguageSwitcher />
+            <a href="/" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">
+              <ArrowLeft className="w-4 h-4" />
+              Back to Home
+            </a>
+          </div>
         </div>
       </nav>
 

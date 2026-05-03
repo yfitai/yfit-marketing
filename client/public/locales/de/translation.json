@@ -1,0 +1,256 @@
+{
+  "nav": {
+    "features": "Funktionen",
+    "pricing": "Preise",
+    "faq": "FAQ",
+    "contact": "Kontakt",
+    "signIn": "Anmelden",
+    "launchApp": "App starten",
+    "getStarted": "Loslegen"
+  },
+  "hero": {
+    "badge": "KI-gestütztes Fitness",
+    "headline1": "Dein persönlicher",
+    "headline2": "KI Fitness Coach",
+    "subheadline": "Verändere deine Gesundheit mit YFIT AI — intelligente Trainingsplanung, Echtzeit-Formanalyse, Ernährungsverfolgung und Medikamentenmanagement. Alles in einer App.",
+    "ctaPrimary": "Kostenlos starten — keine Kreditkarte nötig",
+    "ctaSecondary": "Preise ansehen",
+    "socialProof": "Schliesse dich über 10.000 Nutzern an, die ihr Leben verändern",
+    "limitedOffer": "BEGRENZTES ANGEBOT: Erster Monat Pro GRATIS"
+  },
+  "features": {
+    "sectionTitle": "Alles, was du brauchst",
+    "sectionSubtitle": "Acht leistungsstarke Tools, die zusammenarbeiten, um deine Fitnessreise zu verändern",
+    "goals": {
+      "title": "Ziele",
+      "description": "Setze und verfolge personalisierte Fitnessziele, die auf deine einzigartige Reise zugeschnitten sind",
+      "items": [
+        "Personalisierte Fitnessziele setzen",
+        "Körpermessungen verfolgen",
+        "BMI und Körperfett berechnen",
+        "Ziele basierend auf Fortschritt anpassen"
+      ]
+    },
+    "nutrition": {
+      "title": "Ernährung",
+      "description": "Barcodes scannen, Mahlzeiten protokollieren und Makros verfolgen mit KI-gestützten Ernährungseinblicken",
+      "items": [
+        "Barcode-Scanning für schnelle Protokollierung",
+        "Makros und Kalorien verfolgen",
+        "KI-gestützte Mahlzeitvorschläge",
+        "Ernährungseinblicke und Berichte"
+      ]
+    },
+    "fitness": {
+      "title": "Fitness",
+      "description": "Zugang zu personalisierten Trainingsplänen mit Echtzeit-Formanalyse und Coaching",
+      "items": [
+        "Personalisierte Trainingspläne",
+        "Echtzeit-Formanalyse",
+        "Übungsdemonstrationen",
+        "Verfolgung der progressiven Überlastung"
+      ]
+    },
+    "dailyTracker": {
+      "title": "Tages-Tracker",
+      "description": "Protokolliere deine täglichen Aktivitäten, Mahlzeiten, Workouts und Medikamente an einem Ort",
+      "items": [
+        "Tägliche Aktivitäten protokollieren",
+        "Mahlzeiten und Workouts verfolgen",
+        "Medikamente überwachen",
+        "Tagesfortschritts-Übersicht"
+      ]
+    },
+    "medications": {
+      "title": "Medikamente",
+      "description": "Verfolge Rezepte, Nahrungsergänzungsmittel und erstelle Berichte für Arztbesuche",
+      "items": [
+        "Rezepte und Nahrungsergänzungsmittel verfolgen",
+        "Berichte für Ärzte erstellen",
+        "Medikamentenpläne überwachen",
+        "Gesundheitsintegration"
+      ]
+    },
+    "progress": {
+      "title": "Fortschritt",
+      "description": "Visualisiere deine Transformation mit detaillierten Analysen und Fortschrittsfotos",
+      "items": [
+        "Visuelle Fortschrittsdiagramme",
+        "Verfolgung von Körpermessungen",
+        "Vergleich von Fortschrittsfotos",
+        "Meilenstein-Feiern"
+      ]
+    },
+    "predictions": {
+      "title": "Vorhersagen",
+      "description": "KI-gestützte Prognosen für dein Gewicht, deine Kraft und Fitness-Meilensteine",
+      "items": [
+        "KI-Gewichtsprognose",
+        "Kraftfortschritts-Vorhersagen",
+        "Schätzung der Zielzeitlinie",
+        "Personalisierte Einblicke"
+      ]
+    },
+    "aiCoach": {
+      "title": "KI Coach",
+      "description": "Dein intelligenter Fitness-Begleiter rund um die Uhr mit personalisierter Anleitung",
+      "items": [
+        "24/7 KI-Coaching",
+        "Personalisierte Trainingsratschläge",
+        "Ernährungsempfehlungen",
+        "Motivation und Unterstützung"
+      ]
+    }
+  },
+  "differentiators": {
+    "sectionTitle": "Warum YFIT AI anders ist",
+    "formAnalysis": {
+      "title": "Echtzeit-Formanalyse",
+      "description": "Unsere KI-Kameratechnologie überwacht deine Bewegungen in Echtzeit und korrigiert deine Form, bevor Verletzungen auftreten. Keine andere kostenlose App bietet dieses Mass an Coaching."
+    },
+    "medicationTracking": {
+      "title": "Medikamenten- & Nahrungsergänzungsmittel-Tracking",
+      "description": "Verfolge alle deine Medikamente und Nahrungsergänzungsmittel mit Interaktionswarnungen. Erstelle professionelle Berichte für deine Arztbesuche."
+    },
+    "aiPredictions": {
+      "title": "KI-Fortschrittsvorhersagen",
+      "description": "Sieh deine Zukunft. Unsere KI prognostiziert dein Gewicht, deine Kraft und Meilensteindaten basierend auf deinen tatsächlichen Daten – nicht auf generischen Diagrammen."
+    }
+  },
+  "pricing": {
+    "sectionTitle": "Wähle deinen Plan",
+    "sectionSubtitle": "Kostenlos starten, upgraden, wenn du bereit bist. Keine versteckten Gebühren. Jederzeit kündbar.",
+    "limitedOffer": "BEGRENZTES ANGEBOT: Erster Monat Pro GRATIS",
+    "mostPopular": "AM BELIEBTESTEN",
+    "bestValue": "BESTES PREIS-LEISTUNGS-VERHÄLTNIS",
+    "perMonth": "/Monat",
+    "perYear": "/Jahr",
+    "oneTime": "einmalig",
+    "free": {
+      "name": "Kostenlos Basic",
+      "description": "Perfekt für den Einstieg",
+      "features": [
+        "Grundlegendes Trainingstracking",
+        "Manuelle Mahlzeitenprotokollierung",
+        "2 gespeicherte Trainingsroutinen",
+        "Grundlegendes Fortschrittstracking",
+        "Gewicht & Körpermetriken",
+        "3 KI-Formanalysen/Monat",
+        "Begrenzte KI-Coach-Anfragen"
+      ],
+      "cta": "Kostenlos starten — keine Kreditkarte nötig"
+    },
+    "proMonthly": {
+      "name": "Pro Monat",
+      "description": "Flexibelste Option",
+      "features": [
+        "Alles in Kostenlos",
+        "Barcode-Ernährungsscanning",
+        "KI-Formanalyse",
+        "Medikamenten-Tracking",
+        "Berichte für Ärzte",
+        "Erweiterte Analysen",
+        "Priorisierter Support"
+      ],
+      "cta": "Pro Monat starten"
+    },
+    "proYearly": {
+      "name": "Pro Jahr",
+      "description": "Spare 35% gegenüber monatlich",
+      "features": [
+        "Alles in Pro Monat",
+        "Exklusive Workshops",
+        "Früher Zugang zu neuen Funktionen",
+        "Erweiterte Gesundheitseinblicke"
+      ],
+      "cta": "Pro Jahr starten"
+    },
+    "lifetime": {
+      "name": "Lifetime",
+      "description": "Einmal zahlen, für immer besitzen",
+      "features": [
+        "Lifetime Pro Zugang",
+        "Alle zukünftigen Funktionen inklusive",
+        "Gründer-Abzeichen",
+        "Direkter Entwicklerzugang"
+      ],
+      "cta": "Lifetime Zugang erhalten"
+    }
+  },
+  "testimonials": {
+    "sectionTitle": "Was unsere Nutzer sagen"
+  },
+  "faqPreview": {
+    "sectionTitle": "Häufig gestellte Fragen",
+    "viewAll": "Alle FAQs ansehen"
+  },
+  "cta": {
+    "headline": "Bereit, deine Fitness zu verändern?",
+    "subheadline": "Schliesse dich Tausenden von Nutzern an, die ihre Ziele bereits mit YFIT AI erreichen.",
+    "button": "Heute kostenlos starten",
+    "noCreditCard": "Keine Kreditkarte erforderlich"
+  },
+  "footer": {
+    "tagline": "Dein persönlicher KI Fitness Coach",
+    "product": "Produkt",
+    "features": "Funktionen",
+    "pricing": "Preise",
+    "faq": "FAQ",
+    "support": "Support",
+    "contact": "Kontakt",
+    "privacy": "Datenschutzrichtlinie",
+    "terms": "Nutzungsbedingungen",
+    "copyright": "© 2025 YFIT AI. Alle Rechte vorbehalten."
+  },
+  "contact": {
+    "title": "Kontaktiere uns",
+    "subtitle": "Hast du Fragen? Wir würden uns freuen, von dir zu hören. Sende uns eine Nachricht und wir werden so schnell wie möglich antworten.",
+    "name": "Dein Name",
+    "email": "E-Mail-Adresse",
+    "subject": "Betreff",
+    "message": "Nachricht",
+    "send": "Nachricht senden",
+    "sending": "Senden...",
+    "successTitle": "Nachricht gesendet!",
+    "successMessage": "Vielen Dank für deine Kontaktaufnahme. Wir werden uns innerhalb von 4–6 Stunden bei dir melden.",
+    "emailUs": "Sende uns eine E-Mail",
+    "responseTime": "Antwortzeit",
+    "responseTimeValue": "Normalerweise innerhalb von 4–6 Stunden",
+    "support": "Support",
+    "supportValue": "support@yfitai.com"
+  },
+  "faq": {
+    "title": "Häufig gestellte Fragen",
+    "subtitle": "Alles, was du über YFIT AI wissen musst",
+    "categories": {
+      "all": "Alle",
+      "general": "Allgemein",
+      "features": "Funktionen",
+      "pricing": "Preise",
+      "technical": "Technisch"
+    },
+    "stillHaveQuestions": "Noch Fragen?",
+    "contactSupport": "Support kontaktieren"
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "subtitle": "Die gesuchte Seite existiert nicht.",
+    "backHome": "Zurück zur Startseite"
+  },
+  "common": {
+    "loading": "Lädt...",
+    "error": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+    "learnMore": "Mehr erfahren",
+    "getStarted": "Loslegen",
+    "viewAll": "Alle ansehen",
+    "close": "Schliessen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "submit": "Senden",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "confirm": "Bestätigen"
+  }
+}

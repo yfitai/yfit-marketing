@@ -1,0 +1,256 @@
+{
+  "nav": {
+    "features": "Fonctionnalités",
+    "pricing": "Tarifs",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "signIn": "Se connecter",
+    "launchApp": "Lancer l'application",
+    "getStarted": "Commencer"
+  },
+  "hero": {
+    "badge": "Fitness propulsé par l'IA",
+    "headline1": "Votre coach fitness",
+    "headline2": "IA personnel",
+    "subheadline": "Transformez votre santé avec YFIT AI — planification d'entraînement intelligente, analyse de forme en temps réel, suivi nutritionnel et gestion des médicaments. Tout en une seule application.",
+    "ctaPrimary": "Commencez gratuitement — Pas de carte de crédit",
+    "ctaSecondary": "Voir les tarifs",
+    "socialProof": "Rejoignez plus de 10 000 utilisateurs qui transforment leur vie",
+    "limitedOffer": "OFFRE LIMITÉE : Premier mois de Pro GRATUIT"
+  },
+  "features": {
+    "sectionTitle": "Tout ce dont vous avez besoin",
+    "sectionSubtitle": "Huit outils puissants travaillant ensemble pour transformer votre parcours fitness",
+    "goals": {
+      "title": "Objectifs",
+      "description": "Fixez et suivez des objectifs fitness personnalisés adaptés à votre parcours unique",
+      "items": [
+        "Fixez des objectifs fitness personnalisés",
+        "Suivez les mesures corporelles",
+        "Calculez l'IMC et la masse grasse",
+        "Ajustez les objectifs en fonction des progrès"
+      ]
+    },
+    "nutrition": {
+      "title": "Nutrition",
+      "description": "Scannez les codes-barres, enregistrez les repas et suivez les macros avec des informations nutritionnelles basées sur l'IA",
+      "items": [
+        "Scan de codes-barres pour un enregistrement rapide",
+        "Suivi des macros et des calories",
+        "Suggestions de repas basées sur l'IA",
+        "Informations et rapports nutritionnels"
+      ]
+    },
+    "fitness": {
+      "title": "Fitness",
+      "description": "Accédez à des plans d'entraînement personnalisés avec analyse de forme et coaching en temps réel",
+      "items": [
+        "Plans d'entraînement personnalisés",
+        "Analyse de forme en temps réel",
+        "Démonstrations d'exercices",
+        "Suivi de la surcharge progressive"
+      ]
+    },
+    "dailyTracker": {
+      "title": "Suivi quotidien",
+      "description": "Enregistrez vos activités quotidiennes, repas, entraînements et médicaments en un seul endroit",
+      "items": [
+        "Enregistrez les activités quotidiennes",
+        "Suivez les repas et les entraînements",
+        "Surveillez les médicaments",
+        "Aperçu des progrès quotidiens"
+      ]
+    },
+    "medications": {
+      "title": "Médicaments",
+      "description": "Suivez les ordonnances, les suppléments et générez des rapports pour les visites chez le médecin",
+      "items": [
+        "Suivez les ordonnances et les suppléments",
+        "Générez des rapports pour les professionnels de la santé",
+        "Surveillez les horaires de prise de médicaments",
+        "Intégration santé"
+      ]
+    },
+    "progress": {
+      "title": "Progrès",
+      "description": "Visualisez votre transformation avec des analyses détaillées et des photos de progrès",
+      "items": [
+        "Graphiques de progrès visuels",
+        "Suivi des mesures corporelles",
+        "Comparaisons de photos de progrès",
+        "Célébrations des étapes importantes"
+      ]
+    },
+    "predictions": {
+      "title": "Prédictions",
+      "description": "Prévisions basées sur l'IA pour votre poids, votre force et vos étapes fitness",
+      "items": [
+        "Prévisions de poids par l'IA",
+        "Prédictions de progression de force",
+        "Estimations de la chronologie des objectifs",
+        "Informations personnalisées"
+      ]
+    },
+    "aiCoach": {
+      "title": "Coach IA",
+      "description": "Votre compagnon fitness intelligent 24h/24 et 7j/7 offrant des conseils personnalisés",
+      "items": [
+        "Coaching IA 24h/24 et 7j/7",
+        "Conseils d'entraînement personnalisés",
+        "Recommandations nutritionnelles",
+        "Motivation et soutien"
+      ]
+    }
+  },
+  "differentiators": {
+    "sectionTitle": "Pourquoi YFIT AI est différent",
+    "formAnalysis": {
+      "title": "Analyse de forme en temps réel",
+      "description": "Notre technologie de caméra IA observe vos mouvements en temps réel, corrigeant votre forme avant qu'une blessure ne survienne. Aucune autre application gratuite n'offre ce niveau de coaching."
+    },
+    "medicationTracking": {
+      "title": "Suivi des médicaments et suppléments",
+      "description": "Suivez tous vos médicaments et suppléments avec des alertes d'interaction. Générez des rapports professionnels pour vos visites chez le médecin."
+    },
+    "aiPredictions": {
+      "title": "Prédictions de progrès par l'IA",
+      "description": "Voyez votre futur. Notre IA prévoit votre poids, votre force et les dates de vos étapes importantes en fonction de vos données réelles — pas de graphiques génériques."
+    }
+  },
+  "pricing": {
+    "sectionTitle": "Choisissez votre plan",
+    "sectionSubtitle": "Commencez gratuitement, passez à la version supérieure quand vous êtes prêt. Pas de frais cachés. Annulez à tout moment.",
+    "limitedOffer": "OFFRE LIMITÉE : Premier mois de Pro GRATUIT",
+    "mostPopular": "LE PLUS POPULAIRE",
+    "bestValue": "MEILLEUR RAPPORT QUALITÉ-PRIX",
+    "perMonth": "/mois",
+    "perYear": "/an",
+    "oneTime": "une fois",
+    "free": {
+      "name": "Gratuit Basique",
+      "description": "Parfait pour commencer",
+      "features": [
+        "Suivi d'entraînement basique",
+        "Enregistrement manuel des repas",
+        "2 routines d'entraînement sauvegardées",
+        "Suivi de progrès basique",
+        "Poids et mesures corporelles",
+        "3 analyses de forme IA/mois",
+        "Requêtes limitées au Coach IA"
+      ],
+      "cta": "Commencez gratuitement — Pas de carte de crédit"
+    },
+    "proMonthly": {
+      "name": "Pro Mensuel",
+      "description": "Option la plus flexible",
+      "features": [
+        "Tout ce qui est inclus dans le plan Gratuit",
+        "Scan de codes-barres nutritionnels",
+        "Analyse de forme par l'IA",
+        "Suivi des médicaments",
+        "Rapports pour les professionnels de la santé",
+        "Analyses avancées",
+        "Support prioritaire"
+      ],
+      "cta": "Commencer Pro Mensuel"
+    },
+    "proYearly": {
+      "name": "Pro Annuel",
+      "description": "Économisez 35% par rapport au mensuel",
+      "features": [
+        "Tout ce qui est inclus dans Pro Mensuel",
+        "Ateliers exclusifs",
+        "Accès anticipé aux nouvelles fonctionnalités",
+        "Informations de santé avancées"
+      ],
+      "cta": "Commencer Pro Annuel"
+    },
+    "lifetime": {
+      "name": "À vie",
+      "description": "Payez une fois, possédez pour toujours",
+      "features": [
+        "Accès Pro à vie",
+        "Toutes les futures fonctionnalités incluses",
+        "Badge Fondateur",
+        "Accès direct aux développeurs"
+      ],
+      "cta": "Obtenir l'accès à vie"
+    }
+  },
+  "testimonials": {
+    "sectionTitle": "Ce que disent nos utilisateurs"
+  },
+  "faqPreview": {
+    "sectionTitle": "Questions fréquentes",
+    "viewAll": "Voir toutes les FAQ"
+  },
+  "cta": {
+    "headline": "Prêt à transformer votre forme physique ?",
+    "subheadline": "Rejoignez des milliers d'utilisateurs qui atteignent déjà leurs objectifs avec YFIT AI.",
+    "button": "Commencez gratuitement aujourd'hui",
+    "noCreditCard": "Aucune carte de crédit requise"
+  },
+  "footer": {
+    "tagline": "Votre coach fitness IA personnel",
+    "product": "Produit",
+    "features": "Fonctionnalités",
+    "pricing": "Tarifs",
+    "faq": "FAQ",
+    "support": "Support",
+    "contact": "Nous contacter",
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions d'utilisation",
+    "copyright": "© 2025 YFIT AI. Tous droits réservés."
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Vous avez des questions ? Nous serions ravis de vous entendre. Envoyez-nous un message et nous vous répondrons dès que possible.",
+    "name": "Votre nom",
+    "email": "Adresse e-mail",
+    "subject": "Sujet",
+    "message": "Message",
+    "send": "Envoyer le message",
+    "sending": "Envoi...",
+    "successTitle": "Message envoyé !",
+    "successMessage": "Merci de nous avoir contactés. Nous vous répondrons dans les 4 à 6 heures.",
+    "emailUs": "Envoyez-nous un e-mail",
+    "responseTime": "Temps de réponse",
+    "responseTimeValue": "Généralement dans les 4 à 6 heures",
+    "support": "Support",
+    "supportValue": "support@yfitai.com"
+  },
+  "faq": {
+    "title": "Foire aux questions",
+    "subtitle": "Tout ce que vous devez savoir sur YFIT AI",
+    "categories": {
+      "all": "Tout",
+      "general": "Général",
+      "features": "Fonctionnalités",
+      "pricing": "Tarifs",
+      "technical": "Technique"
+    },
+    "stillHaveQuestions": "Vous avez encore des questions ?",
+    "contactSupport": "Contacter le support"
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "subtitle": "La page que vous recherchez n'existe pas.",
+    "backHome": "Retour à l'accueil"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue. Veuillez réessayer.",
+    "learnMore": "En savoir plus",
+    "getStarted": "Commencer",
+    "viewAll": "Voir tout",
+    "close": "Fermer",
+    "back": "Retour",
+    "next": "Suivant",
+    "submit": "Envoyer",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "confirm": "Confirmer"
+  }
+}

@@ -6,6 +6,7 @@ import MedicationShowcase from "@/components/MedicationShowcase";
 import { Check, ArrowRight, Activity, Zap, Smartphone, BarChart3, Pill, Eye, Target, Dumbbell, TrendingUp, Apple, Calendar, Brain, Loader2, X, Mail } from "lucide-react";
 import { useLocation } from "wouter";
 import { useStripeCheckout } from "@/hooks/useStripeCheckout";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 export default function Home() {
   const [, navigate] = useLocation();
@@ -233,6 +234,7 @@ export default function Home() {
             <button onClick={scrollToFeatures} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Features</button>
             <button onClick={scrollToPricing} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Pricing</button>
             <button onClick={goToContact} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Contact</button>
+            <LanguageSwitcher />
             <Button onClick={goToSignIn} variant="outline" size="sm">Sign In</Button>
             <Button onClick={goToSignUp} size="sm" className="bg-gradient-to-r from-blue-600 to-violet-600 hover:opacity-90 text-white">
               Get Started
@@ -240,6 +242,7 @@ export default function Home() {
           </div>
           {/* Mobile nav */}
           <div className="md:hidden flex gap-2">
+            <LanguageSwitcher />
             <Button onClick={goToSignIn} variant="outline" size="sm">Sign In</Button>
             <Button onClick={goToSignUp} size="sm" className="bg-gradient-to-r from-blue-600 to-violet-600 text-white">Start</Button>
           </div>
