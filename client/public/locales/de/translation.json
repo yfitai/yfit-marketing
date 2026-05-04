@@ -120,7 +120,20 @@
   "pricing": {
     "sectionTitle": "Wähle deinen Plan",
     "sectionSubtitle": "Kostenlos starten, upgraden, wenn du bereit bist. Keine versteckten Gebühren. Jederzeit kündbar.",
-    "limitedOffer": "BEGRENZTES ANGEBOT: Erster Monat Pro GRATIS",
+    "limitedOffer": {
+      "name": "Zeitlich begrenztes Angebot",
+      "price": "1 Monat KOSTENLOS",
+      "description": "Vollständiger Pro-Plan",
+      "badge": "BEGRENZTE ZEIT",
+      "features": [
+        "Alle Pro-Funktionen inklusive",
+        "Keine Kreditkarte erforderlich",
+        "Jederzeit kündbar",
+        "Sofortiger Zugang",
+        "Alle 8 App-Funktionen"
+      ],
+      "cta": "Kostenlosen Monat beanspruchen"
+    },
     "mostPopular": "AM BELIEBTESTEN",
     "bestValue": "BESTES PREIS-LEISTUNGS-VERHÄLTNIS",
     "perMonth": "/Monat",

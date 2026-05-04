@@ -24,42 +24,82 @@
     "goals": {
       "title": "Goals",
       "description": "Set and track personalized fitness goals tailored to your unique journey",
-      "items": ["Set personalized fitness targets", "Track body measurements", "Calculate BMI and body fat", "Adjust goals based on progress"]
+      "items": [
+        "Set personalized fitness targets",
+        "Track body measurements",
+        "Calculate BMI and body fat",
+        "Adjust goals based on progress"
+      ]
     },
     "nutrition": {
       "title": "Nutrition",
       "description": "Scan barcodes, log meals, and track macros with AI-powered nutrition insights",
-      "items": ["Barcode scanning for quick logging", "Track macros and calories", "AI-powered meal suggestions", "Nutritional insights and reports"]
+      "items": [
+        "Barcode scanning for quick logging",
+        "Track macros and calories",
+        "AI-powered meal suggestions",
+        "Nutritional insights and reports"
+      ]
     },
     "fitness": {
       "title": "Fitness",
       "description": "Access personalized workout plans with real-time form analysis and coaching",
-      "items": ["Personalized workout plans", "Real-time form analysis", "Exercise demonstrations", "Progressive overload tracking"]
+      "items": [
+        "Personalized workout plans",
+        "Real-time form analysis",
+        "Exercise demonstrations",
+        "Progressive overload tracking"
+      ]
     },
     "dailyTracker": {
       "title": "Daily Tracker",
       "description": "Log your daily activities, meals, workouts, and medications in one place",
-      "items": ["Log daily activities", "Track meals and workouts", "Monitor medications", "Daily progress overview"]
+      "items": [
+        "Log daily activities",
+        "Track meals and workouts",
+        "Monitor medications",
+        "Daily progress overview"
+      ]
     },
     "medications": {
       "title": "Medications",
       "description": "Track prescriptions, supplements, and generate provider reports for doctor visits",
-      "items": ["Track prescriptions and supplements", "Generate provider reports", "Monitor medication schedules", "Health integration"]
+      "items": [
+        "Track prescriptions and supplements",
+        "Generate provider reports",
+        "Monitor medication schedules",
+        "Health integration"
+      ]
     },
     "progress": {
       "title": "Progress",
       "description": "Visualize your transformation with detailed analytics and progress photos",
-      "items": ["Visual progress charts", "Body measurement tracking", "Progress photo comparisons", "Milestone celebrations"]
+      "items": [
+        "Visual progress charts",
+        "Body measurement tracking",
+        "Progress photo comparisons",
+        "Milestone celebrations"
+      ]
     },
     "predictions": {
       "title": "Predictions",
       "description": "AI-powered forecasts for your weight, strength, and fitness milestones",
-      "items": ["AI weight forecasting", "Strength progression predictions", "Goal timeline estimates", "Personalized insights"]
+      "items": [
+        "AI weight forecasting",
+        "Strength progression predictions",
+        "Goal timeline estimates",
+        "Personalized insights"
+      ]
     },
     "aiCoach": {
       "title": "AI Coach",
       "description": "Your 24/7 intelligent fitness companion providing personalized guidance",
-      "items": ["24/7 AI coaching", "Personalized workout advice", "Nutrition recommendations", "Motivation and support"]
+      "items": [
+        "24/7 AI coaching",
+        "Personalized workout advice",
+        "Nutrition recommendations",
+        "Motivation and support"
+      ]
     }
   },
   "differentiators": {
@@ -80,7 +120,20 @@
   "pricing": {
     "sectionTitle": "Choose Your Plan",
     "sectionSubtitle": "Start free, upgrade when you're ready. No hidden fees. Cancel anytime.",
-    "limitedOffer": "LIMITED TIME: First month of Pro FREE",
+    "limitedOffer": {
+      "name": "Limited Time Offer",
+      "price": "1 Month FREE",
+      "description": "Full featured Pro plan",
+      "badge": "LIMITED TIME",
+      "features": [
+        "Full Pro features included",
+        "No credit card required",
+        "Cancel anytime",
+        "Instant access",
+        "All 8 app features"
+      ],
+      "cta": "Claim Free Month"
+    },
     "mostPopular": "MOST POPULAR",
     "bestValue": "BEST VALUE",
     "perMonth": "/month",
@@ -89,25 +142,51 @@
     "free": {
       "name": "Free Basic",
       "description": "Perfect for getting started",
-      "features": ["Basic workout tracking", "Manual meal logging", "2 saved workout routines", "Basic progress tracking", "Weight & body metrics", "3 AI form analyses/month", "Limited AI Coach queries"],
+      "features": [
+        "Basic workout tracking",
+        "Manual meal logging",
+        "2 saved workout routines",
+        "Basic progress tracking",
+        "Weight & body metrics",
+        "3 AI form analyses/month",
+        "Limited AI Coach queries"
+      ],
       "cta": "Start Free — No Credit Card"
     },
     "proMonthly": {
       "name": "Pro Monthly",
       "description": "Most flexible option",
-      "features": ["Everything in Free", "Barcode nutrition scanning", "AI form analysis", "Medication tracking", "Provider reports", "Advanced analytics", "Priority support"],
+      "features": [
+        "Everything in Free",
+        "Barcode nutrition scanning",
+        "AI form analysis",
+        "Medication tracking",
+        "Provider reports",
+        "Advanced analytics",
+        "Priority support"
+      ],
       "cta": "Start Pro Monthly"
     },
     "proYearly": {
       "name": "Pro Yearly",
       "description": "Save 35% vs monthly",
-      "features": ["Everything in Pro Monthly", "Exclusive workshops", "Early access to new features", "Advanced health insights"],
+      "features": [
+        "Everything in Pro Monthly",
+        "Exclusive workshops",
+        "Early access to new features",
+        "Advanced health insights"
+      ],
       "cta": "Start Pro Yearly"
     },
     "lifetime": {
       "name": "Lifetime",
       "description": "Pay once, own forever",
-      "features": ["Lifetime Pro access", "All future features included", "Founder's badge", "Direct developer access"],
+      "features": [
+        "Lifetime Pro access",
+        "All future features included",
+        "Founder's badge",
+        "Direct developer access"
+      ],
       "cta": "Get Lifetime Access"
     }
   },

@@ -120,7 +120,20 @@
   "pricing": {
     "sectionTitle": "选择您的计划",
     "sectionSubtitle": "免费开始，准备好时再升级。无隐藏费用。随时取消。",
-    "limitedOffer": "限时优惠：首月Pro免费",
+    "limitedOffer": {
+      "name": "限时优惠",
+      "price": "1个月免费",
+      "description": "完整专业版计划",
+      "badge": "限时",
+      "features": [
+        "包含所有专业版功能",
+        "无需信用卡",
+        "随时取消",
+        "即时访问",
+        "全部8个应用功能"
+      ],
+      "cta": "领取免费月份"
+    },
     "mostPopular": "最受欢迎",
     "bestValue": "最佳价值",
     "perMonth": "/月",

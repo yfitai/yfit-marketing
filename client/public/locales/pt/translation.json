@@ -120,7 +120,20 @@
   "pricing": {
     "sectionTitle": "Escolha Seu Plano",
     "sectionSubtitle": "Comece grátis, faça upgrade quando estiver pronto. Sem taxas ocultas. Cancele a qualquer momento.",
-    "limitedOffer": "TEMPO LIMITADO: Primeiro mês do Pro GRÁTIS",
+    "limitedOffer": {
+      "name": "Oferta por Tempo Limitado",
+      "price": "1 Mês GRÁTIS",
+      "description": "Plano Pro completo",
+      "badge": "TEMPO LIMITADO",
+      "features": [
+        "Todos os recursos Pro incluídos",
+        "Sem cartão de crédito necessário",
+        "Cancele a qualquer momento",
+        "Acesso instantâneo",
+        "Todos os 8 recursos do app"
+      ],
+      "cta": "Reivindicar mês grátis"
+    },
     "mostPopular": "MAIS POPULAR",
     "bestValue": "MELHOR CUSTO-BENEFÍCIO",
     "perMonth": "/mês",

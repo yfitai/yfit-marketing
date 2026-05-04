@@ -7,8 +7,10 @@ import { Check, ArrowRight, Activity, Zap, Smartphone, BarChart3, Pill, Eye, Tar
 import { useLocation } from "wouter";
 import { useStripeCheckout } from "@/hooks/useStripeCheckout";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { useTranslation } from "react-i18next";
 
 export default function Home() {
+  const { t } = useTranslation();
   const [, navigate] = useLocation();
 
   const scrollToPricing = () => {
@@ -56,160 +58,125 @@ export default function Home() {
   const features = [
     {
       icon: Target,
-      title: "Goals",
-      description: "Set and track personalized fitness goals tailored to your unique journey",
+      title: t("features.goals.title"),
+      description: t("features.goals.description"),
       cardBg: "bg-blue-600",
-      features: ["Set personalized fitness targets", "Track body measurements", "Calculate BMI and body fat", "Adjust goals based on progress"]
+      features: t("features.goals.items", { returnObjects: true }) as string[]
     },
     {
       icon: Apple,
-      title: "Nutrition",
-      description: "Scan barcodes, log meals, and track macros with AI-powered nutrition insights",
+      title: t("features.nutrition.title"),
+      description: t("features.nutrition.description"),
       cardBg: "bg-green-600",
-      features: ["Barcode scanning for quick logging", "Track macros and calories", "AI-powered meal suggestions", "Nutritional insights and reports"]
+      features: t("features.nutrition.items", { returnObjects: true }) as string[]
     },
     {
       icon: Dumbbell,
-      title: "Fitness",
-      description: "Access personalized workout plans with real-time form analysis and coaching",
+      title: t("features.fitness.title"),
+      description: t("features.fitness.description"),
       cardBg: "bg-purple-600",
-      features: ["Personalized workout plans", "Real-time form analysis", "Exercise demonstrations", "Progressive overload tracking"]
+      features: t("features.fitness.items", { returnObjects: true }) as string[]
     },
     {
       icon: Calendar,
-      title: "Daily Tracker",
-      description: "Log your daily activities, meals, workouts, and medications in one place",
+      title: t("features.dailyTracker.title"),
+      description: t("features.dailyTracker.description"),
       cardBg: "bg-orange-600",
-      features: ["Log daily activities", "Track meals and workouts", "Monitor medications", "Daily progress overview"]
+      features: t("features.dailyTracker.items", { returnObjects: true }) as string[]
     },
     {
       icon: Pill,
-      title: "Medications",
-      description: "Track prescriptions, supplements, and generate provider reports for doctor visits",
+      title: t("features.medications.title"),
+      description: t("features.medications.description"),
       cardBg: "bg-pink-600",
-      features: ["Track prescriptions and supplements", "Generate provider reports", "Monitor medication schedules", "Health integration"]
+      features: t("features.medications.items", { returnObjects: true }) as string[]
     },
     {
       icon: BarChart3,
-      title: "Progress",
-      description: "Visualize your transformation with detailed analytics and progress photos",
+      title: t("features.progress.title"),
+      description: t("features.progress.description"),
       cardBg: "bg-teal-600",
-      features: ["Visual progress charts", "Body measurement tracking", "Progress photo comparisons", "Milestone celebrations"]
+      features: t("features.progress.items", { returnObjects: true }) as string[]
     },
     {
       icon: TrendingUp,
-      title: "Predictions",
-      description: "AI-powered forecasts for your weight, strength, and fitness milestones",
+      title: t("features.predictions.title"),
+      description: t("features.predictions.description"),
       cardBg: "bg-indigo-600",
-      features: ["AI weight forecasting", "Strength progression predictions", "Goal timeline estimates", "Personalized insights"]
+      features: t("features.predictions.items", { returnObjects: true }) as string[]
     },
     {
       icon: Brain,
-      title: "AI Coach",
-      description: "Your 24/7 intelligent fitness companion providing personalized guidance",
+      title: t("features.aiCoach.title"),
+      description: t("features.aiCoach.description"),
       cardBg: "bg-violet-600",
-      features: ["24/7 AI coaching", "Personalized workout advice", "Nutrition recommendations", "Motivation and support"]
+      features: t("features.aiCoach.items", { returnObjects: true }) as string[]
     },
   ];
 
   // Pricing plans
   const pricingPlans = [
     {
-      name: "Free Basic",
+      name: t("pricing.free.name"),
       price: "$0",
       period: "",
-      description: "Perfect for getting started",
+      description: t("pricing.free.description"),
       badge: null,
       badgeColor: null,
-      features: [
-        "Basic workout tracking",
-        "Manual meal logging",
-        "2 saved workout routines",
-        "Basic progress tracking",
-        "Weight & body metrics",
-        "3 AI form analyses/month",
-        "Limited AI Coach queries"
-      ],
-      buttonText: "Start Free — No Credit Card",
+      features: t("pricing.free.features", { returnObjects: true }) as string[],
+      buttonText: t("pricing.free.cta"),
       buttonStyle: "outline" as const,
       highlighted: false,
       stripeKey: "signup" as any,
     },
     {
-      name: "Pro Monthly",
+      name: t("pricing.proMonthly.name"),
       price: "$12.99",
-      period: "/month",
-      description: "Most flexible option",
+      period: t("pricing.perMonth"),
+      description: t("pricing.proMonthly.description"),
       badge: null,
       badgeColor: null,
-      features: [
-        "Everything in Free",
-        "Barcode nutrition scanning",
-        "AI form analysis",
-        "Medication tracking",
-        "Provider reports",
-        "Advanced analytics",
-        "Priority support"
-      ],
-      buttonText: "Start Pro Monthly",
+      features: t("pricing.proMonthly.features", { returnObjects: true }) as string[],
+      buttonText: t("pricing.proMonthly.cta"),
       buttonStyle: "default" as const,
       highlighted: false,
       stripeKey: "proMonthly" as const,
     },
     {
-      name: "Pro Yearly",
+      name: t("pricing.proYearly.name"),
       price: "$99.99",
-      period: "/year",
-      description: "Save 35% vs monthly",
-      badge: "BEST VALUE",
+      period: t("pricing.perYear"),
+      description: t("pricing.proYearly.description"),
+      badge: t("pricing.bestValue"),
       badgeColor: "bg-green-600",
-      features: [
-        "Everything in Pro Monthly",
-        "Exclusive workshops",
-        "Early access to new features",
-        "Advanced health insights",
-        "Priority support"
-      ],
-      buttonText: "Start Pro Yearly",
+      features: t("pricing.proYearly.features", { returnObjects: true }) as string[],
+      buttonText: t("pricing.proYearly.cta"),
       buttonStyle: "default" as const,
       highlighted: true,
       stripeKey: "proYearly" as const,
     },
     {
-      name: "Pro Lifetime",
+      name: t("pricing.lifetime.name"),
       price: "$249.99",
-      period: " one-time",
-      description: "Pay once, own forever",
-      badge: "MOST POPULAR",
+      period: ` ${t("pricing.oneTime")}`,
+      description: t("pricing.lifetime.description"),
+      badge: t("pricing.mostPopular"),
       badgeColor: "bg-violet-600",
-      features: [
-        "Everything in Pro Yearly",
-        "Lifetime access — pay once",
-        "All future features included",
-        "Founder's Badge",
-        "Direct developer access",
-        "No recurring charges ever"
-      ],
-      buttonText: "Get Lifetime Access",
+      features: t("pricing.lifetime.features", { returnObjects: true }) as string[],
+      buttonText: t("pricing.lifetime.cta"),
       buttonStyle: "default" as const,
       highlighted: false,
       stripeKey: "proLifetime" as const,
     },
     {
-      name: "Limited Time Offer",
-      price: "1 Month FREE",
+      name: t("pricing.limitedOffer.name"),
+      price: t("pricing.limitedOffer.price"),
       period: "",
-      description: "Full featured Pro plan",
-      badge: "LIMITED TIME",
+      description: t("pricing.limitedOffer.description"),
+      badge: t("pricing.limitedOffer.badge"),
       badgeColor: "bg-orange-500",
-      features: [
-        "Full Pro features included",
-        "No credit card required",
-        "Cancel anytime",
-        "Instant access",
-        "All 8 app features",
-      ],
-      buttonText: "Claim Free Month",
+      features: t("pricing.limitedOffer.features", { returnObjects: true }) as string[],
+      buttonText: t("pricing.limitedOffer.cta"),
       buttonStyle: "default" as const,
       highlighted: false,
       isOffer: true,
@@ -221,7 +188,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col">
       {/* Limited Time Offer Banner */}
       <div className="w-full bg-gradient-to-r from-primary to-accent text-white py-3 text-center font-semibold text-sm md:text-base">
-        🎉 LIMITED TIME OFFER: Get 1 Month FREE on All Pro Plans! 🎉
+        🎉 {t("hero.limitedOffer")} 🎉
       </div>
 
       {/* Navigation */}
@@ -231,20 +198,20 @@ export default function Home() {
             <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663099417101/YPVUcoNPoLMtiepj.png" alt="YFIT AI Logo" className="h-10 w-auto object-contain" />
           </div>
           <div className="hidden md:flex items-center gap-8">
-            <button onClick={scrollToFeatures} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Features</button>
-            <button onClick={scrollToPricing} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Pricing</button>
-            <button onClick={goToContact} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Contact</button>
+            <button onClick={scrollToFeatures} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">{t("nav.features")}</button>
+            <button onClick={scrollToPricing} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">{t("nav.pricing")}</button>
+            <button onClick={goToContact} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">{t("nav.contact")}</button>
             <LanguageSwitcher />
-            <Button onClick={goToSignIn} variant="outline" size="sm">Sign In</Button>
+            <Button onClick={goToSignIn} variant="outline" size="sm">{t("nav.signIn")}</Button>
             <Button onClick={goToSignUp} size="sm" className="bg-gradient-to-r from-blue-600 to-violet-600 hover:opacity-90 text-white">
-              Get Started
+              {t("nav.getStarted")}
             </Button>
           </div>
           {/* Mobile nav */}
           <div className="md:hidden flex gap-2">
             <LanguageSwitcher />
-            <Button onClick={goToSignIn} variant="outline" size="sm">Sign In</Button>
-            <Button onClick={goToSignUp} size="sm" className="bg-gradient-to-r from-blue-600 to-violet-600 text-white">Start</Button>
+            <Button onClick={goToSignIn} variant="outline" size="sm">{t("nav.signIn")}</Button>
+            <Button onClick={goToSignUp} size="sm" className="bg-gradient-to-r from-blue-600 to-violet-600 text-white">{t("nav.getStarted")}</Button>
           </div>
         </div>
       </nav>
@@ -256,7 +223,7 @@ export default function Home() {
             <div className="space-y-8">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-600/10 border border-green-600/20 text-green-700 text-sm font-medium">
                 <Zap className="w-4 h-4" />
-                <span>The only all in one health and fitness app that tracks everything</span>
+                <span>{t("hero.badge")}</span>
               </div>
               <h1 className="text-4xl lg:text-6xl font-bold leading-tight text-foreground">
                 Finally, a health and fitness app that tracks your medications and{" "}
@@ -267,11 +234,11 @@ export default function Home() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button onClick={goToSignUp} size="lg" className="text-lg px-8 bg-gradient-to-r from-green-600 to-teal-600 hover:opacity-90 text-white shadow-lg">
-                  Start Free — No Credit Card Required
+                  {t("hero.ctaPrimary")}
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
                 <Button onClick={scrollToPricing} size="lg" variant="outline" className="text-lg px-8 border-green-600/30 hover:bg-green-50">
-                  View Pricing
+                  {t("hero.ctaSecondary")}
                 </Button>
               </div>
               {/* Social proof strip */}
@@ -374,9 +341,9 @@ export default function Home() {
       <section id="features" className="py-20 bg-gray-50">
         <div className="container mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl lg:text-5xl font-bold mb-6 text-foreground">Everything You Need</h2>
+            <h2 className="text-3xl lg:text-5xl font-bold mb-6 text-foreground">{t("features.sectionTitle")}</h2>
             <p className="text-lg text-muted-foreground">
-              YFIT AI provides 8 powerful tools to help you achieve your fitness goals with personalized AI guidance.
+              {t("features.sectionSubtitle")}
             </p>
           </div>
 
@@ -809,22 +776,21 @@ export default function Home() {
             <Zap className="w-4 h-4" />
             No credit card required · Free forever plan available
           </div>
-          <h2 className="text-3xl lg:text-5xl font-bold mb-6">The fitness app that actually knows you.</h2>
+          <h2 className="text-3xl lg:text-5xl font-bold mb-6">{t("cta.headline")}</h2>
           <p className="text-xl text-white/80 mb-8 max-w-2xl mx-auto">
-            Medications, workouts, nutrition, and AI coaching — all connected. Start free today.
+            {t("cta.subheadline")}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button onClick={goToSignUp} size="lg" className="text-lg px-8 bg-white text-green-700 hover:bg-gray-100 shadow-lg font-semibold">
-              Start Free — No Credit Card Required
+              {t("cta.button")}
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
             <Button onClick={scrollToPricing} size="lg" variant="outline" className="text-lg px-8 border-white text-white hover:bg-white/10">
-              View Pricing
-            </Button>
+              {t("hero.ctaSecondary")}
+             </Button>
           </div>
         </div>
       </section>
-
       {/* Footer */}
       <footer className="py-12 border-t border-gray-200 bg-gray-50">
         <div className="container mx-auto px-6">
@@ -833,37 +799,37 @@ export default function Home() {
               <div className="flex items-center gap-2 mb-4">
                 <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663099417101/YPVUcoNPoLMtiepj.png" alt="YFIT AI" className="h-10 w-auto object-contain" />
               </div>
-              <p className="text-sm text-muted-foreground">The most personalized AI fitness app ever built.</p>
+              <p className="text-sm text-muted-foreground">{t("footer.tagline")}</p>
             </div>
             <div>
-              <h4 className="font-semibold mb-3 text-sm">Product</h4>
+              <h4 className="font-semibold mb-3 text-sm">{t("footer.product")}</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><button onClick={scrollToFeatures} className="hover:text-primary transition-colors">Features</button></li>
-                <li><button onClick={scrollToPricing} className="hover:text-primary transition-colors">Pricing</button></li>
+                <li><button onClick={scrollToFeatures} className="hover:text-primary transition-colors">{t("footer.features")}</button></li>
+                <li><button onClick={scrollToPricing} className="hover:text-primary transition-colors">{t("footer.pricing")}</button></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-3 text-sm">Legal</h4>
+              <h4 className="font-semibold mb-3 text-sm">{t("footer.faq")}</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><button onClick={goToPrivacy} className="hover:text-primary transition-colors">Privacy Policy</button></li>
-                <li><button onClick={goToTerms} className="hover:text-primary transition-colors">Terms of Service</button></li>
+                <li><button onClick={goToPrivacy} className="hover:text-primary transition-colors">{t("footer.privacy")}</button></li>
+                <li><button onClick={goToTerms} className="hover:text-primary transition-colors">{t("footer.terms")}</button></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-3 text-sm">Support</h4>
+              <h4 className="font-semibold mb-3 text-sm">{t("footer.support")}</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li><button onClick={goToContact} className="hover:text-primary transition-colors">Contact Us</button></li>
-                <li><button onClick={goToContact} className="hover:text-primary transition-colors">Support Center</button></li>
-                <li><p className="text-xs">support@yfitai.com</p></li>
+                <li><button onClick={goToContact} className="hover:text-primary transition-colors">{t("footer.contact")}</button></li>
+                <li><a href="mailto:support@yfitai.com" className="text-xs hover:text-primary transition-colors">support@yfitai.com</a></li>
               </ul>
             </div>
           </div>
           <div className="border-t border-gray-200 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-muted-foreground">© 2026 YFIT AI. All rights reserved.</p>
+            <p className="text-sm text-muted-foreground">{t("footer.copyright")}</p>
             <div className="flex gap-4 text-sm text-muted-foreground">
-              <button onClick={goToPrivacy} className="hover:text-primary transition-colors">Privacy</button>
-              <button onClick={goToTerms} className="hover:text-primary transition-colors">Terms</button>
-              <button onClick={goToContact} className="hover:text-primary transition-colors">Contact</button>
+              <button onClick={goToPrivacy} className="hover:text-primary transition-colors">{t("footer.privacy")}</button>
+              <button onClick={goToTerms} className="hover:text-primary transition-colors">{t("footer.terms")}</button>
+              <button onClick={goToContact} className="hover:text-primary transition-colors">{t("nav.contact")}</button>
             </div>
           </div>
         </div>
@@ -872,11 +838,11 @@ export default function Home() {
       <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white border-t border-gray-200 shadow-2xl px-4 py-3">
         <div className="flex items-center gap-3">
           <div className="flex-1">
-            <p className="text-xs font-semibold text-foreground">Start Free Today</p>
-            <p className="text-xs text-muted-foreground">No credit card required</p>
+            <p className="text-xs font-semibold text-foreground">{t("cta.button")}</p>
+            <p className="text-xs text-muted-foreground">{t("cta.noCreditCard")}</p>
           </div>
-          <Button onClick={goToSignUp} size="sm" className="bg-gradient-to-r from-green-600 to-teal-600 text-white font-semibold px-5 flex-shrink-0">
-            Get Started
+            <Button onClick={goToSignUp} size="sm" className="bg-gradient-to-r from-green-600 to-teal-600 text-white font-semibold px-5 flex-shrink-0">
+            {t("nav.getStarted")}
             <ArrowRight className="ml-1.5 w-3.5 h-3.5" />
           </Button>
         </div>

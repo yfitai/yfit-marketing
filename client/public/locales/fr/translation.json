@@ -120,7 +120,20 @@
   "pricing": {
     "sectionTitle": "Choisissez votre plan",
     "sectionSubtitle": "Commencez gratuitement, passez à la version supérieure quand vous êtes prêt. Pas de frais cachés. Annulez à tout moment.",
-    "limitedOffer": "OFFRE LIMITÉE : Premier mois de Pro GRATUIT",
+    "limitedOffer": {
+      "name": "Offre Limitée",
+      "price": "1 Mois GRATUIT",
+      "description": "Plan Pro complet",
+      "badge": "TEMPS LIMITÉ",
+      "features": [
+        "Toutes les fonctionnalités Pro incluses",
+        "Pas de carte de crédit requise",
+        "Annulez à tout moment",
+        "Accès instantané",
+        "Les 8 fonctionnalités de l'application"
+      ],
+      "cta": "Réclamer le mois gratuit"
+    },
     "mostPopular": "LE PLUS POPULAIRE",
     "bestValue": "MEILLEUR RAPPORT QUALITÉ-PRIX",
     "perMonth": "/mois",
