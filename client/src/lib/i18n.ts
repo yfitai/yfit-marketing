@@ -16,6 +16,297 @@ export const SUPPORTED_LANGUAGES = [
 
 export type LanguageCode = (typeof SUPPORTED_LANGUAGES)[number]["code"];
 
+// English translations inlined as the immediate fallback.
+// This prevents the race condition where t() is called before the async
+// fetch() completes, causing returnObjects to return a string key instead
+// of an array, which then crashes on .map().
+const enTranslation = {
+  nav: {
+    features: "Features",
+    pricing: "Pricing",
+    faq: "FAQ",
+    contact: "Contact",
+    signIn: "Sign In",
+    launchApp: "Launch App",
+    getStarted: "Get Started",
+  },
+  hero: {
+    badge: "AI-Powered Fitness",
+    headline1: "Your Personal",
+    headline2: "AI Fitness Coach",
+    subheadline:
+      "Transform your health with YFIT AI — intelligent workout planning, real-time form analysis, nutrition tracking, and medication management. All in one app.",
+    ctaPrimary: "Start Free — No Credit Card",
+    ctaSecondary: "View Pricing",
+    socialProof: "Join 10,000+ users transforming their lives",
+    limitedOffer: "LIMITED TIME: First month of Pro FREE",
+  },
+  features: {
+    sectionTitle: "Everything You Need",
+    sectionSubtitle:
+      "Eight powerful tools working together to transform your fitness journey",
+    goals: {
+      title: "Goals",
+      description:
+        "Set and track personalized fitness goals tailored to your unique journey",
+      items: [
+        "Set personalized fitness targets",
+        "Track body measurements",
+        "Calculate BMI and body fat",
+        "Adjust goals based on progress",
+      ],
+    },
+    nutrition: {
+      title: "Nutrition",
+      description:
+        "Scan barcodes, log meals, and track macros with AI-powered nutrition insights",
+      items: [
+        "Barcode scanning for quick logging",
+        "Track macros and calories",
+        "AI-powered meal suggestions",
+        "Nutritional insights and reports",
+      ],
+    },
+    fitness: {
+      title: "Fitness",
+      description:
+        "Access personalized workout plans with real-time form analysis and coaching",
+      items: [
+        "Personalized workout plans",
+        "Real-time form analysis",
+        "Exercise demonstrations",
+        "Progressive overload tracking",
+      ],
+    },
+    dailyTracker: {
+      title: "Daily Tracker",
+      description:
+        "Log your daily activities, meals, workouts, and medications in one place",
+      items: [
+        "Log daily activities",
+        "Track meals and workouts",
+        "Monitor medications",
+        "Daily progress overview",
+      ],
+    },
+    medications: {
+      title: "Medications",
+      description:
+        "Track prescriptions, supplements, and generate provider reports for doctor visits",
+      items: [
+        "Track prescriptions and supplements",
+        "Generate provider reports",
+        "Monitor medication schedules",
+        "Health integration",
+      ],
+    },
+    progress: {
+      title: "Progress",
+      description:
+        "Visualize your transformation with detailed analytics and progress photos",
+      items: [
+        "Visual progress charts",
+        "Body measurement tracking",
+        "Progress photo comparisons",
+        "Milestone celebrations",
+      ],
+    },
+    predictions: {
+      title: "Predictions",
+      description:
+        "AI-powered forecasts for your weight, strength, and fitness milestones",
+      items: [
+        "AI weight forecasting",
+        "Strength progression predictions",
+        "Goal timeline estimates",
+        "Personalized insights",
+      ],
+    },
+    aiCoach: {
+      title: "AI Coach",
+      description:
+        "Your 24/7 intelligent fitness companion providing personalized guidance",
+      items: [
+        "24/7 AI coaching",
+        "Personalized workout advice",
+        "Nutrition recommendations",
+        "Motivation and support",
+      ],
+    },
+  },
+  differentiators: {
+    sectionTitle: "Why YFIT AI is Different",
+    formAnalysis: {
+      title: "Real-Time Form Analysis",
+      description:
+        "Our AI camera technology watches your movements in real time, correcting your form before injury happens. No other free app offers this level of coaching.",
+    },
+    medicationTracking: {
+      title: "Medication & Supplement Tracking",
+      description:
+        "Track all your medications and supplements with interaction alerts. Generate professional provider reports for your doctor visits.",
+    },
+    aiPredictions: {
+      title: "AI Progress Predictions",
+      description:
+        "See your future. Our AI forecasts your weight, strength, and milestone dates based on your actual data — not generic charts.",
+    },
+  },
+  pricing: {
+    sectionTitle: "Choose Your Plan",
+    sectionSubtitle:
+      "Start free, upgrade when you're ready. No hidden fees. Cancel anytime.",
+    limitedOffer: {
+      name: "Limited Time Offer",
+      price: "1 Month FREE",
+      description: "Full featured Pro plan",
+      badge: "LIMITED TIME",
+      features: [
+        "Full Pro features included",
+        "No credit card required",
+        "Cancel anytime",
+        "Instant access",
+        "All 8 app features",
+      ],
+      cta: "Claim Free Month",
+    },
+    mostPopular: "MOST POPULAR",
+    bestValue: "BEST VALUE",
+    perMonth: "/month",
+    perYear: "/year",
+    oneTime: "one-time",
+    free: {
+      name: "Free Basic",
+      description: "Perfect for getting started",
+      features: [
+        "Basic workout tracking",
+        "Manual meal logging",
+        "2 saved workout routines",
+        "Basic progress tracking",
+        "Weight & body metrics",
+        "3 AI form analyses/month",
+        "Limited AI Coach queries",
+      ],
+      cta: "Start Free — No Credit Card",
+    },
+    proMonthly: {
+      name: "Pro Monthly",
+      description: "Most flexible option",
+      features: [
+        "Everything in Free",
+        "Barcode nutrition scanning",
+        "AI form analysis",
+        "Medication tracking",
+        "Provider reports",
+        "Advanced analytics",
+        "Priority support",
+      ],
+      cta: "Start Pro Monthly",
+    },
+    proYearly: {
+      name: "Pro Yearly",
+      description: "Save 35% vs monthly",
+      features: [
+        "Everything in Pro Monthly",
+        "Exclusive workshops",
+        "Early access to new features",
+        "Advanced health insights",
+      ],
+      cta: "Start Pro Yearly",
+    },
+    lifetime: {
+      name: "Lifetime",
+      description: "Pay once, own forever",
+      features: [
+        "Lifetime Pro access",
+        "All future features included",
+        "Founder's badge",
+        "Direct developer access",
+      ],
+      cta: "Get Lifetime Access",
+    },
+  },
+  testimonials: {
+    sectionTitle: "What Our Users Say",
+  },
+  faqPreview: {
+    sectionTitle: "Common Questions",
+    viewAll: "View All FAQs",
+  },
+  cta: {
+    headline: "Ready to Transform Your Fitness?",
+    subheadline:
+      "Join thousands of users who are already achieving their goals with YFIT AI.",
+    button: "Start Free Today",
+    noCreditCard: "No credit card required",
+  },
+  footer: {
+    tagline: "Your Personal AI Fitness Coach",
+    product: "Product",
+    features: "Features",
+    pricing: "Pricing",
+    faq: "FAQ",
+    support: "Support",
+    contact: "Contact Us",
+    privacy: "Privacy Policy",
+    terms: "Terms of Service",
+    copyright: "© 2025 YFIT AI. All rights reserved.",
+  },
+  contact: {
+    title: "Get in Touch",
+    subtitle:
+      "Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.",
+    name: "Your Name",
+    email: "Email Address",
+    subject: "Subject",
+    message: "Message",
+    send: "Send Message",
+    sending: "Sending...",
+    successTitle: "Message Sent!",
+    successMessage:
+      "Thank you for reaching out. We'll get back to you within 4–6 hours.",
+    emailUs: "Email Us",
+    responseTime: "Response Time",
+    responseTimeValue: "Usually within 4–6 hours",
+    support: "Support",
+    supportValue: "support@yfitai.com",
+  },
+  faq: {
+    title: "Frequently Asked Questions",
+    subtitle: "Everything you need to know about YFIT AI",
+    categories: {
+      all: "All",
+      general: "General",
+      features: "Features",
+      pricing: "Pricing",
+      technical: "Technical",
+    },
+    stillHaveQuestions: "Still have questions?",
+    contactSupport: "Contact Support",
+  },
+  notFound: {
+    title: "Page Not Found",
+    subtitle: "The page you're looking for doesn't exist.",
+    backHome: "Back to Home",
+  },
+  common: {
+    loading: "Loading...",
+    error: "Something went wrong. Please try again.",
+    learnMore: "Learn More",
+    getStarted: "Get Started",
+    viewAll: "View All",
+    close: "Close",
+    back: "Back",
+    next: "Next",
+    submit: "Submit",
+    cancel: "Cancel",
+    save: "Save",
+    edit: "Edit",
+    delete: "Delete",
+    confirm: "Confirm",
+  },
+};
+
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
@@ -28,8 +319,11 @@ i18n
     },
     fallbackLng: "en",
     supportedLngs: SUPPORTED_LANGUAGES.map((l) => l.code),
-    // Start with empty resources — filled by fetch() calls below
-    resources: {},
+    // English is inlined so it's available immediately on first render.
+    // Other languages are loaded asynchronously below.
+    resources: {
+      en: { translation: enTranslation },
+    },
     load: "languageOnly",
     ns: ["translation"],
     defaultNS: "translation",
@@ -42,8 +336,8 @@ i18n
     },
   });
 
-// Dynamically load translation files
-SUPPORTED_LANGUAGES.forEach(({ code }) => {
+// Dynamically load non-English translation files
+SUPPORTED_LANGUAGES.filter(({ code }) => code !== "en").forEach(({ code }) => {
   fetch(`/locales/${code}/translation.json`)
     .then((res) => res.json())
     .then((data) => {
